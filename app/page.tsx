@@ -119,10 +119,12 @@ export default function Home() {
           </div>
 
           <button
-            type="button"
-            onClick={openReading}
-            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition"
-          >
+  type="button"
+  onTouchStart={openReading}
+  onClick={openReading}
+  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition min-h-[72px] touch-manipulation select-none"
+  style={{ WebkitTapHighlightColor: "transparent" }}
+>
             Открыть предсказание
           </button>
         </div>
