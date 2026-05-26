@@ -98,14 +98,15 @@ export default function Home() {
               </p>
             </div>
 
-            <button
-  onClick={() => {
-    setOpened(true);
-  }}
-  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition"
+            <div
+  role="button"
+  tabIndex={0}
+  onClick={() => setOpened(true)}
+  onTouchStart={() => setOpened(true)}
+  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition text-center cursor-pointer select-none"
 >
   Открыть предсказание
-</button>
+</div>
           </div>
         ) : (
           <div className="rounded-[32px] overflow-hidden bg-zinc-950 border border-zinc-800">
