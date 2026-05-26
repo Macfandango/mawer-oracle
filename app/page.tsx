@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 const cards = [
   {
     card: "THE MOON",
@@ -47,60 +43,15 @@ const cards = [
   },
 ];
 
-type Card = (typeof cards)[number];
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { reading?: string };
+}) {
+  const isReading = searchParams.reading === "1";
+  const selectedCard = cards[Math.floor(Math.random() * cards.length)];
 
-export default function Home() {
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  function openReading() {
-    setLoading(true);
-
-    window.setTimeout(() => {
-      const card = cards[Math.floor(Math.random() * cards.length)];
-      setSelectedCard(card);
-      setLoading(false);
-    }, 1600);
-  }
-
-  function shareReading() {
-    if (!selectedCard) return;
-
-    const text = `${selectedCard.card} — ${selectedCard.meaning}`;
-
-    if (navigator.share) {
-      navigator.share({
-        title: "Mawer Oracle",
-        text,
-        url: "https://mawer-oracle.vercel.app",
-      });
-    } else {
-      navigator.clipboard.writeText(text);
-      alert("Reading copied");
-    }
-  }
-
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
-        <div className="flex flex-col items-center justify-center text-center space-y-6 animate-pulse">
-          <div className="w-32 h-32 rounded-full border-4 border-fuchsia-500 border-t-transparent animate-spin" />
-
-          <div className="space-y-2">
-            <p className="text-fuchsia-400 tracking-[0.4em] text-sm">
-              MAWER ORACLE
-            </p>
-
-            <h2 className="text-3xl font-bold">Reading your energy...</h2>
-
-            <p className="text-zinc-500">The cards are aligning</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (!selectedCard) {
+  if (!isReading) {
     return (
       <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
         <div className="max-w-md w-full text-center space-y-8">
@@ -118,15 +69,12 @@ export default function Home() {
             <p className="text-zinc-400">Открой сегодняшний вайб.</p>
           </div>
 
-          <button
-  type="button"
-  onTouchStart={openReading}
-  onClick={openReading}
-  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition min-h-[72px] touch-manipulation select-none"
-  style={{ WebkitTapHighlightColor: "transparent" }}
->
+          <a
+            href="/?reading=1"
+            className="block w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition min-h-[72px]"
+          >
             Открыть предсказание
-          </button>
+          </a>
         </div>
       </main>
     );
@@ -173,13 +121,12 @@ export default function Home() {
             <p className="text-lg">{selectedCard.track}</p>
           </div>
 
-          <button
-            type="button"
-            className="w-full bg-white text-black py-4 rounded-2xl font-bold"
-            onClick={shareReading}
+          <a
+            href="/"
+            className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
           >
-            Поделиться вайбом
-          </button>
+            Открыть заново
+          </a>
         </div>
       </div>
     </main>
