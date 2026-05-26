@@ -17,7 +17,7 @@ export default function Home() {
         </div>
 
         <a
-          href="/reading"
+          href="/reading/loading"
           className="block w-full bg-white text-black py-5 rounded-3xl font-bold text-lg min-h-[72px] text-center"
         >
           Открыть предсказание
