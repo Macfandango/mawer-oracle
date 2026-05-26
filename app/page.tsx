@@ -165,11 +165,16 @@ export default function Home() {
               <button
                 className="w-full bg-white text-black py-4 rounded-2xl font-bold"
                 onClick={() => {
-                  navigator.share?.({
-                    title: "Mawer Oracle",
-                    text: `${randomCard.card} — ${randomCard.meaning}`,
-                  });
-                }}
+  if (navigator.share) {
+    navigator.share({
+      title: "Mawer Oracle",
+      text: `${randomCard.card} — ${randomCard.meaning}`,
+      url: "https://mawer-oracle.vercel.app",
+    });
+  } else {
+    alert("Sharing is not supported on this device");
+  }
+}}
               >
                 Поделиться вайбом
               </button>
