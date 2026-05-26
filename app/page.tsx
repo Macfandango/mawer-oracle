@@ -99,18 +99,13 @@ export default function Home() {
             </div>
 
             <button
-              onClick={() => {
-  		setLoading(true);
-
-  		setTimeout(() => {
-   			setLoading(false);
-    			setOpened(true);
-  		}, 2500);
-	      }}
-              className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition"
-            >
-              Открыть предсказание
-            </button>
+  onClick={() => {
+    setOpened(true);
+  }}
+  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition"
+>
+  Открыть предсказание
+</button>
           </div>
         ) : (
           <div className="rounded-[32px] overflow-hidden bg-zinc-950 border border-zinc-800">
