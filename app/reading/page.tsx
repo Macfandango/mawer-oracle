@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 const cards = [
   {
     card: "THE MOON",
@@ -45,7 +49,42 @@ const cards = [
 ];
 
 export default function Reading() {
-  const selectedCard = cards[Math.floor(Math.random() * cards.length)];
+  const [loading, setLoading] = useState(true);
+
+  const selectedCard =
+    cards[Math.floor(Math.random() * cards.length)];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
+        <div className="flex flex-col items-center justify-center text-center space-y-6 animate-pulse">
+          <div className="w-32 h-32 rounded-full border-4 border-fuchsia-500 border-t-transparent animate-spin" />
+
+          <div className="space-y-2">
+            <p className="text-fuchsia-400 tracking-[0.4em] text-sm">
+              MAWER ORACLE
+            </p>
+
+            <h2 className="text-3xl font-bold">
+              Reading your energy...
+            </h2>
+
+            <p className="text-zinc-500">
+              The cards are aligning
+            </p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
@@ -64,19 +103,27 @@ export default function Reading() {
               {selectedCard.rarity}
             </p>
 
-            <p className="text-zinc-500 text-xs">CARD OF THE DAY</p>
+            <p className="text-zinc-500 text-xs">
+              CARD OF THE DAY
+            </p>
           </div>
 
-          <h2 className="text-4xl font-bold">{selectedCard.card}</h2>
+          <h2 className="text-4xl font-bold">
+            {selectedCard.card}
+          </h2>
 
           <p className="text-zinc-300 leading-relaxed">
             {selectedCard.meaning}
           </p>
 
           <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
-            <p className="text-xs text-zinc-500 mb-1">RARITY</p>
+            <p className="text-xs text-zinc-500 mb-1">
+              RARITY
+            </p>
 
-            <p className={`text-lg font-bold ${selectedCard.rarityColor}`}>
+            <p
+              className={`text-lg font-bold ${selectedCard.rarityColor}`}
+            >
               {selectedCard.rarity}
             </p>
 
@@ -86,8 +133,13 @@ export default function Reading() {
           </div>
 
           <div className="bg-zinc-900 rounded-2xl p-4">
-            <p className="text-zinc-500 text-xs mb-1">TRACK OF THE DAY</p>
-            <p className="text-lg">{selectedCard.track}</p>
+            <p className="text-zinc-500 text-xs mb-1">
+              TRACK OF THE DAY
+            </p>
+
+            <p className="text-lg">
+              {selectedCard.track}
+            </p>
           </div>
 
           <a
