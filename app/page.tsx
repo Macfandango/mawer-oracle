@@ -6,34 +6,55 @@ const cards = [
   {
     card: "THE MOON",
     rarity: "EPIC",
+    rarityColor: "text-fuchsia-400",
+    chance: "2.1%",
     meaning:
       "Сегодня день интуиции, скрытых знаков и внутренних ответов. Не пытайся всё контролировать.",
     track: "Lana Del Rey — West Coast",
     artwork:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200",
   },
+
   {
     card: "THE STAR",
     rarity: "RARE",
+    rarityColor: "text-cyan-400",
+    chance: "7%",
     meaning:
       "Сегодня тебе важно вернуться к вере в себя. День мягкости, надежды и красоты.",
     track: "Cigarettes After Sex — Apocalypse",
     artwork:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200",
   },
+
   {
     card: "THE LOVERS",
     rarity: "LEGENDARY",
+    rarityColor: "text-pink-400",
+    chance: "0.8%",
     meaning:
       "Сегодня день эмоциональной химии и неожиданных чувств.",
     track: "Arctic Monkeys — I Wanna Be Yours",
     artwork:
       "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200",
   },
+
+  {
+    card: "THE DEVIL",
+    rarity: "FORBIDDEN",
+    rarityColor: "text-red-500",
+    chance: "0.2%",
+    meaning:
+      "Что-то сегодня будет слишком притягательным, чтобы это игнорировать.",
+    track: "Massive Attack — Angel",
+    artwork:
+      "https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=1200",
+  },
 ];
 
 export default function Home() {
   const [opened, setOpened] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const randomCard =
     cards[Math.floor(Math.random() * cards.length)];
@@ -41,7 +62,25 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
       <div className="max-w-md w-full">
-        {!opened ? (
+        {loading ? (
+  <div className="flex flex-col items-center justify-center h-screen text-center space-y-6 animate-pulse">
+    <div className="w-32 h-32 rounded-full border-4 border-fuchsia-500 border-t-transparent animate-spin" />
+
+    <div className="space-y-2">
+      <p className="text-fuchsia-400 tracking-[0.4em] text-sm">
+        MAWER ORACLE
+      </p>
+
+      <h2 className="text-3xl font-bold">
+        Reading your energy...
+      </h2>
+
+      <p className="text-zinc-500">
+        The cards are aligning
+      </p>
+    </div>
+  </div>
+) : !opened ? (
           <div className="text-center space-y-8">
             <div className="space-y-4">
               <p className="text-purple-400 tracking-[0.4em] text-sm">
@@ -60,7 +99,14 @@ export default function Home() {
             </div>
 
             <button
-              onClick={() => setOpened(true)}
+              onClick={() => {
+  		setLoading(true);
+
+  		setTimeout(() => {
+   			setLoading(false);
+    			setOpened(true);
+  		}, 2500);
+	      }}
               className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg active:scale-95 transition"
             >
               Открыть предсказание
@@ -75,7 +121,7 @@ export default function Home() {
 
             <div className="p-6 space-y-5">
               <div className="flex justify-between">
-                <p className="text-purple-400 text-xs tracking-[0.3em]">
+                <p className={`${randomCard.rarityColor} text-xs tracking-[0.3em] font-bold`}>
                   {randomCard.rarity}
                 </p>
 
@@ -88,9 +134,23 @@ export default function Home() {
                 {randomCard.card}
               </h2>
 
-              <p className="text-zinc-300 leading-relaxed">
-                {randomCard.meaning}
-              </p>
+<p className="text-zinc-300 leading-relaxed">
+  {randomCard.meaning}
+</p>
+
+<div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
+  <p className="text-xs text-zinc-500 mb-1">
+    RARITY
+  </p>
+
+  <p className={`text-lg font-bold ${randomCard.rarityColor}`}>
+    {randomCard.rarity}
+  </p>
+
+  <p className="text-zinc-400 text-sm mt-2">
+    Only {randomCard.chance} of users got this card today.
+  </p>
+</div>
 
               <div className="bg-zinc-900 rounded-2xl p-4">
                 <p className="text-zinc-500 text-xs mb-1">
