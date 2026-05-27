@@ -1,61 +1,7 @@
-"use client";
-
-import { useState } from "react";
-import { supabase } from "@/lib/supabase";
-
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp?: {
-        initDataUnsafe?: {
-          user?: {
-            id?: number;
-            username?: string;
-            first_name?: string;
-            last_name?: string;
-          };
-        };
-      };
-    };
-  }
-}
-
 export default function MindIntentionPage() {
-
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  if (loading) return;
-    setLoading(true);
-
-    const readingId = crypto.randomUUID();
-    const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
-
-    const { error } = await supabase.from("intentions").insert([
-      {
-        telegram_id: tgUser?.id ? String(tgUser.id) : null,
-        username: tgUser?.username || null,
-        first_name: tgUser?.first_name || null,
-        last_name: tgUser?.last_name || null,
-        reading_id: readingId,
-        method: "mind",
-        intention_text: null,
-        card_name: null,
-      },
-    ]);
-
-    setLoading(false);
-
-    if (!error) {
-      window.location.href = `/reading/loading?readingId=${readingId}`;
-    }
-  };
-
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
       <div className="max-w-md w-full space-y-6">
-
         <div className="text-center space-y-4">
           <p className="text-fuchsia-400 tracking-[0.4em] text-sm">
             MAWER ORACLE
@@ -70,15 +16,16 @@ export default function MindIntentionPage() {
           </p>
         </div>
 
-<form onSubmit={handleSubmit}>
-  <button
-    type="submit"
-    disabled={loading}
-    className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
-  >
-    {loading ? "..." : "Получить карту"}
-  </button>
-</form>
+        <form action="/reading/loading" method="GET">
+          <input type="hidden" name="method" value="mind" />
+
+          <button
+            type="submit"
+            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
+          >
+            Получить карту
+          </button>
+        </form>
       </div>
     </main>
   );
