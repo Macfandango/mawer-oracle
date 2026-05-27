@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -28,22 +28,29 @@ export default function IntentionPage() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const saveIntention = async () => {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const modeFromUrl = params.get("mode");
 
+    if (modeFromUrl === "mind" || modeFromUrl === "write") {
+      setMode(modeFromUrl);
+    }
+  }, []);
+
+  const saveIntention = async () => {
     if (!mode) return;
 
     setLoading(true);
 
     const readingId = crypto.randomUUID();
-
-const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+    const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
 
     const { error } = await supabase.from("intentions").insert([
       {
-telegram_id: tgUser?.id ? String(tgUser.id) : null,
-username: tgUser?.username || null,
-first_name: tgUser?.first_name || null,
-last_name: tgUser?.last_name || null,
+        telegram_id: tgUser?.id ? String(tgUser.id) : null,
+        username: tgUser?.username || null,
+        first_name: tgUser?.first_name || null,
+        last_name: tgUser?.last_name || null,
         reading_id: readingId,
         method: mode,
         intention_text: mode === "write" ? text : null,
@@ -77,55 +84,35 @@ last_name: tgUser?.last_name || null,
           </p>
         </div>
 
-<div
-  role="button"
-  tabIndex={0}
-  onClick={() => setMode("mind")}
-  onTouchEnd={() => setMode("mind")}
-  style={{
-    WebkitUserSelect: "none",
-    userSelect: "none",
-    touchAction: "manipulation",
-  }}
-  className={`w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
-    mode === "mind"
-      ? "border-fuchsia-500 bg-fuchsia-500/10"
-      : "border-zinc-800 bg-zinc-950"
-  }`}
->
-  <p className="font-bold text-lg">
-    ✨ Держу намерение в голове
-  </p>
+        <a
+          href="/intention?mode=mind"
+          className={`block w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
+            mode === "mind"
+              ? "border-fuchsia-500 bg-fuchsia-500/10"
+              : "border-zinc-800 bg-zinc-950"
+          }`}
+        >
+          <p className="font-bold text-lg">✨ Держу намерение в голове</p>
 
-  <p className="text-zinc-500 text-sm mt-2">
-    Просто почувствуй свой вопрос внутри себя.
-  </p>
-</div>
+          <p className="text-zinc-500 text-sm mt-2">
+            Просто почувствуй свой вопрос внутри себя.
+          </p>
+        </a>
 
-          <div
-  role="button"
-  tabIndex={0}
-  onClick={() => setMode("write")}
-  onTouchEnd={() => setMode("write")}
-  style={{
-    WebkitUserSelect: "none",
-    userSelect: "none",
-    touchAction: "manipulation",
-  }}
-  className={`w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
-    mode === "write"
-      ? "border-fuchsia-500 bg-fuchsia-500/10"
-      : "border-zinc-800 bg-zinc-950"
-  }`}
->
-  <p className="font-bold text-lg">
-    🖋 Хочу записать намерение
-  </p>
+        <a
+          href="/intention?mode=write"
+          className={`block w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
+            mode === "write"
+              ? "border-fuchsia-500 bg-fuchsia-500/10"
+              : "border-zinc-800 bg-zinc-950"
+          }`}
+        >
+          <p className="font-bold text-lg">🖋 Хочу записать намерение</p>
 
-  <p className="text-zinc-500 text-sm mt-2">
-    Запиши свой вопрос или состояние.
-  </p>
-</div>
+          <p className="text-zinc-500 text-sm mt-2">
+            Запиши свой вопрос или состояние.
+          </p>
+        </a>
 
         {mode === "write" && (
           <textarea
