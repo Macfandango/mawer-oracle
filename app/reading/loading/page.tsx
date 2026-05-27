@@ -12,9 +12,9 @@ export default function LoadingReading() {
               MAWER ORACLE
             </p>
 
-            <h2 className="text-3xl font-bold">Reading your energy...</h2>
+            <h2 className="text-3xl font-bold">Читаю твою энергию...</h2>
 
-            <p className="text-zinc-500">The cards are aligning</p>
+            <p className="text-zinc-500">Вселенная готовит для тебя твою карту</p>
           </div>
         </div>
       </main>

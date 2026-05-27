@@ -65,7 +65,7 @@ export default function ReadingResult() {
             </p>
 
             <p className="text-zinc-500 text-xs">
-              CARD OF THE DAY
+              КАРТА ДНЯ
             </p>
           </div>
 
@@ -79,7 +79,7 @@ export default function ReadingResult() {
 
           <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
             <p className="text-xs text-zinc-500 mb-1">
-              RARITY
+              Энергия твоего намерения
             </p>
 
             <p
@@ -89,13 +89,13 @@ export default function ReadingResult() {
             </p>
 
             <p className="text-zinc-400 text-sm mt-2">
-              Only {selectedCard.chance} of users got this card today.
+              Только {selectedCard.chance} пользователей получили эту карту сегодня!
             </p>
           </div>
 
           <div className="bg-zinc-900 rounded-2xl p-4">
             <p className="text-zinc-500 text-xs mb-1">
-              TRACK OF THE DAY
+              Твой саундтрек сегодня
             </p>
 
             <p className="text-lg">
@@ -107,7 +107,7 @@ export default function ReadingResult() {
             href="/"
             className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
           >
-            Открыть заново
+            Получить новую карту
           </a>
         </div>
       </div>
