@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-
-export const dynamic = "force-dynamic";
 
 type Card = {
   card: string;
@@ -899,7 +897,7 @@ function pickRandomTrack(tracks: string[]) {
   return tracks[Math.floor(Math.random() * tracks.length)];
 }
 
-export default function Reading() {
+function ReadingContent() {
   const searchParams = useSearchParams();
   const readingId = searchParams.get("readingId");
 
@@ -999,5 +997,19 @@ export default function Reading() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function Reading() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
+          <p className="text-zinc-500">Открываю карту...</p>
+        </main>
+      }
+    >
+      <ReadingContent />
+    </Suspense>
   );
 }
