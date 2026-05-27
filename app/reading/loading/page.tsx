@@ -1,13 +1,20 @@
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+"use client";
+
+import { useSearchParams } from "next/navigation";
 
 export default function LoadingReading() {
+  const searchParams = useSearchParams();
+
+  const readingId = searchParams.get("readingId") || "";
+
   return (
     <>
       <meta
-  httpEquiv="refresh"
-  content={`2;url=/reading/result?shuffle=${Math.random().toString(36).slice(2)}`}
-/>
+        httpEquiv="refresh"
+        content={`2;url=/reading/result?readingId=${readingId}&shuffle=${Math.random()
+          .toString(36)
+          .slice(2)}`}
+      />
 
       <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
         <div className="flex flex-col items-center justify-center text-center space-y-6 animate-pulse">
@@ -18,9 +25,13 @@ export default function LoadingReading() {
               MAWER ORACLE
             </p>
 
-            <h2 className="text-3xl font-bold">Читаю твою энергию...</h2>
+            <h2 className="text-3xl font-bold">
+              Читаю твою энергию...
+            </h2>
 
-            <p className="text-zinc-500">Вселенная готовит для тебя твою карту</p>
+            <p className="text-zinc-500">
+              Вселенная готовит для тебя твою карту
+            </p>
           </div>
         </div>
       </main>

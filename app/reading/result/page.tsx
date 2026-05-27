@@ -1,3 +1,9 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+
 type Card = {
   card: string;
   original: string;
@@ -9,9 +15,6 @@ type Card = {
   tracks: string[];
   artwork: string;
 };
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 const cards: Card[] = [
   {
@@ -894,11 +897,50 @@ function pickRandomTrack(tracks: string[]) {
   return tracks[Math.floor(Math.random() * tracks.length)];
 }
 
-export default function ReadingResult() {
-  const selectedCard = drawOneCard();
-  const selectedTrack = pickRandomTrack(selectedCard.tracks);
+export default function Reading() {
+  const searchParams = useSearchParams();
+  const readingId = searchParams.get("readingId");
+
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [selectedTrack, setSelectedTrack] = useState<string>("");
+
+  useEffect(() => {
+    const card = drawOneCard();
+    const track = pickRandomTrack(card.tracks);
+
+    setSelectedCard(card);
+    setSelectedTrack(track);
+  }, []);
+
+  useEffect(() => {
+    if (!readingId || !selectedCard) return;
+
+    const updateCard = async () => {
+      const { data, error } = await supabase
+        .from("intentions")
+        .update({
+          card_name: selectedCard.card,
+        })
+        .eq("reading_id", readingId)
+        .select();
+
+      console.log("CARD UPDATE DATA:", data);
+      console.log("CARD UPDATE ERROR:", error);
+    };
+
+    updateCard();
+  }, [readingId, selectedCard]);
+
+  if (!selectedCard) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
+        <p className="text-zinc-500">Открываю карту...</p>
+      </main>
+    );
+  }
 
   return (
+
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
       <div className="max-w-md w-full rounded-[32px] overflow-hidden bg-zinc-950 border border-zinc-800">
       <div className="bg-black flex items-center justify-center">  

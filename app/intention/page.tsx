@@ -12,22 +12,33 @@ export default function IntentionPage() {
   const [loading, setLoading] = useState(false);
 
   const saveIntention = async () => {
+    if (!mode) return;
+
     setLoading(true);
 
-    await supabase.from("intentions").insert([
+    const readingId = crypto.randomUUID();
+
+    const { error } = await supabase.from("intentions").insert([
       {
+        reading_id: readingId,
         method: mode,
         intention_text: mode === "write" ? text : null,
+        card_name: null,
       },
     ]);
 
-    router.push("/reading/loading");
+    console.log("SUPABASE ERROR:", error);
+
+    setLoading(false);
+
+    if (!error) {
+      router.push(`/reading/loading?readingId=${readingId}`);
+    }
   };
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
       <div className="max-w-md w-full space-y-6">
-
         <div className="text-center space-y-4">
           <p className="text-fuchsia-400 tracking-[0.4em] text-sm">
             MAWER ORACLE
@@ -43,7 +54,6 @@ export default function IntentionPage() {
         </div>
 
         <div className="space-y-4">
-
           <button
             onClick={() => setMode("mind")}
             className={`w-full rounded-3xl border p-5 text-left transition ${
@@ -52,9 +62,7 @@ export default function IntentionPage() {
                 : "border-zinc-800 bg-zinc-950"
             }`}
           >
-            <p className="font-bold text-lg">
-              ✨ Держу намерение в голове
-            </p>
+            <p className="font-bold text-lg">✨ Держу намерение в голове</p>
 
             <p className="text-zinc-500 text-sm mt-2">
               Просто почувствуй свой вопрос внутри себя.
@@ -69,15 +77,12 @@ export default function IntentionPage() {
                 : "border-zinc-800 bg-zinc-950"
             }`}
           >
-            <p className="font-bold text-lg">
-              🖋 Хочу записать намерение
-            </p>
+            <p className="font-bold text-lg">🖋 Хочу записать намерение</p>
 
             <p className="text-zinc-500 text-sm mt-2">
               Запиши свой вопрос или состояние.
             </p>
           </button>
-
         </div>
 
         {mode === "write" && (
@@ -98,7 +103,6 @@ export default function IntentionPage() {
             {loading ? "..." : "Получить карту"}
           </button>
         )}
-
       </div>
     </main>
   );
