@@ -4,6 +4,23 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp?: {
+        initDataUnsafe?: {
+          user?: {
+            id?: number;
+            username?: string;
+            first_name?: string;
+            last_name?: string;
+          };
+        };
+      };
+    };
+  }
+}
+
 export default function IntentionPage() {
   const router = useRouter();
 
@@ -12,14 +29,21 @@ export default function IntentionPage() {
   const [loading, setLoading] = useState(false);
 
   const saveIntention = async () => {
+
     if (!mode) return;
 
     setLoading(true);
 
     const readingId = crypto.randomUUID();
 
+const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+
     const { error } = await supabase.from("intentions").insert([
       {
+telegram_id: tgUser?.id ? String(tgUser.id) : null,
+username: tgUser?.username || null,
+first_name: tgUser?.first_name || null,
+last_name: tgUser?.last_name || null,
         reading_id: readingId,
         method: mode,
         intention_text: mode === "write" ? text : null,
