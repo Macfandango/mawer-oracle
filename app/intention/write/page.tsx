@@ -28,6 +28,7 @@ export default function WriteIntentionPage() {
   const [loading, setLoading] = useState(false);
 
   const saveIntention = async () => {
+    if (loading) return;
     setLoading(true);
 
     const readingId = crypto.randomUUID();
@@ -78,11 +79,16 @@ export default function WriteIntentionPage() {
           className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
         />
 
-       <div
+      <div
   role="button"
   tabIndex={0}
   onClick={saveIntention}
-  onTouchEnd={saveIntention}
+  onPointerUp={saveIntention}
+  style={{
+    WebkitUserSelect: "none",
+    userSelect: "none",
+    touchAction: "manipulation",
+  }}
   className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
 >
   {loading ? "..." : "Получить карту"}
