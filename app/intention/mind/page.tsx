@@ -2,12 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-declare global {
-  interface Window {
-    Telegram?: any;
-  }
-}
-
 export default function MindIntentionPage() {
   const [tgUser, setTgUser] = useState<any>(null);
 
