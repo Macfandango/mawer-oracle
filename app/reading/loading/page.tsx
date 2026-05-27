@@ -1,7 +1,13 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function LoadingReading() {
   return (
     <>
-      <meta httpEquiv="refresh" content="2;url=/reading/result" />
+      <meta
+  httpEquiv="refresh"
+  content={`2;url=/reading/result?shuffle=${Math.random().toString(36).slice(2)}`}
+/>
 
       <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
         <div className="flex flex-col items-center justify-center text-center space-y-6 animate-pulse">

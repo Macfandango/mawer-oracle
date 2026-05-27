@@ -10,6 +10,9 @@ type Card = {
   artwork: string;
 };
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const cards: Card[] = [
   {
     card: "Шут",
@@ -871,16 +874,20 @@ const cards: Card[] = [
   },
 ];
 
-function pickWeightedCard() {
-  const totalWeight = cards.reduce((sum, card) => sum + card.weight, 0);
-  let random = Math.random() * totalWeight;
+function shuffleDeck(deck: Card[]) {
+  const shuffled = [...deck];
 
-  for (const card of cards) {
-    random -= card.weight;
-    if (random <= 0) return card;
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
   }
 
-  return cards[0];
+  return shuffled;
+}
+
+function drawOneCard() {
+  const shuffledDeck = shuffleDeck(cards);
+  return shuffledDeck[0];
 }
 
 function pickRandomTrack(tracks: string[]) {
@@ -888,7 +895,7 @@ function pickRandomTrack(tracks: string[]) {
 }
 
 export default function ReadingResult() {
-  const selectedCard = pickWeightedCard();
+  const selectedCard = drawOneCard();
   const selectedTrack = pickRandomTrack(selectedCard.tracks);
 
   return (
@@ -940,11 +947,11 @@ export default function ReadingResult() {
           </div>
 
           <a
-            href="/"
-            className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
-          >
-            Получить новую карту
-          </a>
+  href={`/reading/loading?intent=${Math.random().toString(36).slice(2)}`}
+  className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
+>
+  Проверить еще 1 намерение
+</a>
         </div>
       </div>
     </main>
