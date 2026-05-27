@@ -16,22 +16,22 @@ export default function WriteIntentionPage() {
           </p>
         </div>
 
-        <form action="/reading/loading" method="GET" className="space-y-6">
-          <input type="hidden" name="method" value="write" />
+        <form action="/api/create-reading" method="GET" className="space-y-6">
+  <input type="hidden" name="method" value="write" />
 
-          <textarea
-            name="intention"
-            placeholder="Например: что мне важно понять прямо сейчас?"
-            className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
-          />
+  <textarea
+    name="intention"
+    placeholder="Например: что мне важно понять прямо сейчас?"
+    className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
+  />
 
-          <button
-            type="submit"
-            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
-          >
-            Получить карту
-          </button>
-        </form>
+  <button
+    type="submit"
+    className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
+  >
+    Получить карту
+  </button>
+</form>
       </div>
     </main>
   );

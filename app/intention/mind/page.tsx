@@ -16,16 +16,16 @@ export default function MindIntentionPage() {
           </p>
         </div>
 
-        <form action="/reading/loading" method="GET">
-          <input type="hidden" name="method" value="mind" />
+        <form action="/api/create-reading" method="GET">
+  <input type="hidden" name="method" value="mind" />
 
-          <button
-            type="submit"
-            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
-          >
-            Получить карту
-          </button>
-        </form>
+  <button
+    type="submit"
+    className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
+  >
+    Получить карту
+  </button>
+</form>
       </div>
     </main>
   );

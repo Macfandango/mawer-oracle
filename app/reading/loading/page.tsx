@@ -1,71 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { supabase } from "@/lib/supabase";
-
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp?: {
-        initDataUnsafe?: {
-          user?: {
-            id?: number;
-            username?: string;
-            first_name?: string;
-            last_name?: string;
-          };
-        };
-      };
-    };
-  }
-}
+import { useEffect } from "react";
 
 export default function LoadingReading() {
-  const hasRun = useRef(false);
-
   useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
+    const params = new URLSearchParams(window.location.search);
+    const readingId = params.get("readingId") || "";
+    const shuffle = Math.random().toString(36).slice(2);
 
-    const run = async () => {
-      const params = new URLSearchParams(window.location.search);
+    const timer = setTimeout(() => {
+      window.location.href = `/reading/result?readingId=${readingId}&shuffle=${shuffle}`;
+    }, 1800);
 
-      const existingReadingId = params.get("readingId");
-      const method = params.get("method");
-      const intention = params.get("intention");
-      const shuffle = Math.random().toString(36).slice(2);
-
-      if (existingReadingId) {
-        window.location.replace(`/reading/result?readingId=${existingReadingId}&shuffle=${shuffle}`);
-        return;
-      }
-
-      const readingId = crypto.randomUUID();
-      const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
-
-      const { error } = await supabase.from("intentions").insert([
-        {
-          reading_id: readingId,
-          telegram_id: tgUser?.id ? String(tgUser.id) : null,
-          username: tgUser?.username || null,
-          first_name: tgUser?.first_name || null,
-          last_name: tgUser?.last_name || null,
-          method: method || "unknown",
-          intention_text: method === "write" ? intention : null,
-          card_name: null,
-        },
-      ]);
-
-      console.log("LOADING INSERT ERROR:", error);
-
-      if (!error) {
-        setTimeout(() => {
-          window.location.replace(`/reading/result?readingId=${readingId}&shuffle=${shuffle}`);
-        }, 1800);
-      }
-    };
-
-    run();
+    return () => clearTimeout(timer);
   }, []);
 
   return (
