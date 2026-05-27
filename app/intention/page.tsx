@@ -77,37 +77,37 @@ last_name: tgUser?.last_name || null,
           </p>
         </div>
 
-        <div className="space-y-4">
-          <button
-            onClick={() => setMode("mind")}
-            className={`w-full rounded-3xl border p-5 text-left transition ${
-              mode === "mind"
-                ? "border-fuchsia-500 bg-fuchsia-500/10"
-                : "border-zinc-800 bg-zinc-950"
-            }`}
-          >
-            <p className="font-bold text-lg">✨ Держу намерение в голове</p>
+        <div
+  role="button"
+  tabIndex={0}
+  onClick={() => setMode("mind")}
+  className={`w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
+    mode === "mind"
+      ? "border-fuchsia-500 bg-fuchsia-500/10"
+      : "border-zinc-800 bg-zinc-950"
+  }`}
+>
+  <p className="font-bold text-lg">✨ Держу намерение в голове</p>
+  <p className="text-zinc-500 text-sm mt-2">
+    Просто почувствуй свой вопрос внутри себя.
+  </p>
+</div>
 
-            <p className="text-zinc-500 text-sm mt-2">
-              Просто почувствуй свой вопрос внутри себя.
-            </p>
-          </button>
-
-          <button
-            onClick={() => setMode("write")}
-            className={`w-full rounded-3xl border p-5 text-left transition ${
-              mode === "write"
-                ? "border-fuchsia-500 bg-fuchsia-500/10"
-                : "border-zinc-800 bg-zinc-950"
-            }`}
-          >
-            <p className="font-bold text-lg">🖋 Хочу записать намерение</p>
-
-            <p className="text-zinc-500 text-sm mt-2">
-              Запиши свой вопрос или состояние.
-            </p>
-          </button>
-        </div>
+          <div
+  role="button"
+  tabIndex={0}
+  onClick={() => setMode("write")}
+  className={`w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
+    mode === "write"
+      ? "border-fuchsia-500 bg-fuchsia-500/10"
+      : "border-zinc-800 bg-zinc-950"
+  }`}
+>
+  <p className="font-bold text-lg">🖋 Хочу записать намерение</p>
+  <p className="text-zinc-500 text-sm mt-2">
+    Запиши свой вопрос или состояние.
+  </p>
+</div>
 
         {mode === "write" && (
           <textarea
