@@ -36,7 +36,7 @@ export default function LoadingReading() {
       const shuffle = Math.random().toString(36).slice(2);
 
       if (existingReadingId) {
-        window.location.href = `/reading/result?readingId=${existingReadingId}&shuffle=${shuffle}`;
+        window.location.replace(`/reading/result?readingId=${existingReadingId}&shuffle=${shuffle}`);
         return;
       }
 
@@ -60,7 +60,7 @@ export default function LoadingReading() {
 
       if (!error) {
         setTimeout(() => {
-          window.location.href = `/reading/result?readingId=${readingId}&shuffle=${shuffle}`;
+          window.location.replace(`/reading/result?readingId=${readingId}&shuffle=${shuffle}`);
         }, 1800);
       }
     };
