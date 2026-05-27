@@ -84,39 +84,15 @@ export default function IntentionPage() {
           </p>
         </div>
 
-        <div
-  onClick={() => {
-    window.location.assign("/intention?mode=mind");
-  }}
-  className={`block w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
-    mode === "mind"
-      ? "border-fuchsia-500 bg-fuchsia-500/10"
-      : "border-zinc-800 bg-zinc-950"
-  }`}
->
+        <a href="/intention/mind" className="block w-full rounded-3xl border border-zinc-800 bg-zinc-950 p-5 text-left">
   <p className="font-bold text-lg">✨ Держу намерение в голове</p>
+  <p className="text-zinc-500 text-sm mt-2">Просто почувствуй свой вопрос внутри себя.</p>
+</a>
 
-  <p className="text-zinc-500 text-sm mt-2">
-    Просто почувствуй свой вопрос внутри себя.
-  </p>
-</div>
-
-        <div
-  onClick={() => {
-    window.location.assign("/intention?mode=write");
-  }}
-  className={`block w-full rounded-3xl border p-5 text-left transition active:scale-[0.98] cursor-pointer ${
-    mode === "write"
-      ? "border-fuchsia-500 bg-fuchsia-500/10"
-      : "border-zinc-800 bg-zinc-950"
-  }`}
->
+<a href="/intention/write" className="block w-full rounded-3xl border border-zinc-800 bg-zinc-950 p-5 text-left">
   <p className="font-bold text-lg">🖋 Хочу записать намерение</p>
-
-  <p className="text-zinc-500 text-sm mt-2">
-    Запиши свой вопрос или состояние.
-  </p>
-</div>
+  <p className="text-zinc-500 text-sm mt-2">Запиши свой вопрос или состояние.</p>
+</a>
 
         {mode === "write" && (
           <textarea
