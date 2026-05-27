@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 type Card = {
   card: string;
   original: string;
