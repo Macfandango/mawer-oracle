@@ -12,9 +12,17 @@ export async function GET(request: Request) {
   const method = searchParams.get("method") || "unknown";
   const intention = searchParams.get("intention");
   const readingId = crypto.randomUUID();
+const telegram_id = searchParams.get("telegram_id");
+const username = searchParams.get("username");
+const first_name = searchParams.get("first_name");
+const last_name = searchParams.get("last_name");
 
   await supabase.from("intentions").insert([
     {
+telegram_id,
+username,
+first_name,
+last_name,
       reading_id: readingId,
       method,
       intention_text: method === "write" ? intention : null,

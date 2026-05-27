@@ -1,37 +1,46 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+declare global {
+  interface Window {
+    Telegram?: any;
+  }
+}
+
 export default function WriteIntentionPage() {
+  const [tgUser, setTgUser] = useState<any>(null);
+
+  useEffect(() => {
+    setTgUser(window.Telegram?.WebApp?.initDataUnsafe?.user || null);
+  }, []);
+
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
       <div className="max-w-md w-full space-y-6">
         <div className="text-center space-y-4">
-          <p className="text-fuchsia-400 tracking-[0.4em] text-sm">
-            MAWER ORACLE
-          </p>
-
-          <h1 className="text-4xl font-bold leading-tight">
-            Запиши намерение
-          </h1>
-
-          <p className="text-zinc-400">
-            Что тебя сейчас волнует?
-          </p>
+          <p className="text-fuchsia-400 tracking-[0.4em] text-sm">MAWER ORACLE</p>
+          <h1 className="text-4xl font-bold leading-tight">Запиши намерение</h1>
+          <p className="text-zinc-400">Что тебя сейчас волнует?</p>
         </div>
 
         <form action="/api/create-reading" method="GET" className="space-y-6">
-  <input type="hidden" name="method" value="write" />
+          <input type="hidden" name="method" value="write" />
+          <input type="hidden" name="telegram_id" value={tgUser?.id || ""} />
+          <input type="hidden" name="username" value={tgUser?.username || ""} />
+          <input type="hidden" name="first_name" value={tgUser?.first_name || ""} />
+          <input type="hidden" name="last_name" value={tgUser?.last_name || ""} />
 
-  <textarea
-    name="intention"
-    placeholder="Например: что мне важно понять прямо сейчас?"
-    className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
-  />
+          <textarea
+            name="intention"
+            placeholder="Например: что мне важно понять прямо сейчас?"
+            className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
+          />
 
-  <button
-    type="submit"
-    className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
-  >
-    Получить карту
-  </button>
-</form>
+          <button type="submit" className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg">
+            Получить карту
+          </button>
+        </form>
       </div>
     </main>
   );
