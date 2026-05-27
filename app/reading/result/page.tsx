@@ -1,7 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 type Card = {
@@ -897,9 +896,13 @@ function pickRandomTrack(tracks: string[]) {
   return tracks[Math.floor(Math.random() * tracks.length)];
 }
 
-function ReadingContent() {
-  const searchParams = useSearchParams();
-  const readingId = searchParams.get("readingId");
+export default function Reading() {
+  const [readingId, setReadingId] = useState<string | null>(null);
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  setReadingId(params.get("readingId"));
+}, []);
 
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [selectedTrack, setSelectedTrack] = useState<string>("");
@@ -997,19 +1000,5 @@ function ReadingContent() {
         </div>
       </div>
     </main>
-  );
-}
-
-export default function Reading() {
-  return (
-    <Suspense
-      fallback={
-        <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
-          <p className="text-zinc-500">Открываю карту...</p>
-        </main>
-      }
-    >
-      <ReadingContent />
-    </Suspense>
   );
 }
