@@ -69,13 +69,15 @@ export default function MindIntentionPage() {
           </p>
         </div>
 
-        <button
-          onClick={saveIntention}
-          disabled={loading}
-          className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
-        >
-          {loading ? "..." : "Получить карту"}
-        </button>
+        <div
+  role="button"
+  tabIndex={0}
+  onClick={saveIntention}
+  onTouchEnd={saveIntention}
+  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg text-center cursor-pointer active:scale-[0.98]"
+>
+  {loading ? "..." : "Получить карту"}
+</div>
 
       </div>
     </main>
