@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
 declare global {
@@ -21,7 +21,12 @@ declare global {
 }
 
 export default function LoadingReading() {
+  const hasRun = useRef(false);
+
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     const run = async () => {
       const params = new URLSearchParams(window.location.search);
 
