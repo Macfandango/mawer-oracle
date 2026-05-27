@@ -10,7 +10,7 @@ export default function Home() {
           <h1 className="text-5xl font-bold leading-tight">
             Твоя карта,
             <br />
-            сандтрек и картина дня
+            саундтрек и картина дня
           </h1>
 
           <p className="text-zinc-400">Открой себя сегодня.</p>

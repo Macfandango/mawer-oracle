@@ -278,11 +278,14 @@ export default function ReadingResult() {
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
       <div className="max-w-md w-full rounded-[32px] overflow-hidden bg-zinc-950 border border-zinc-800">
-        <img
+      <div className="bg-black flex items-center justify-center">  
+
+<img
           src={selectedCard.artwork}
           alt={selectedCard.card}
-          className="w-full h-80 object-cover"
+          className="w-full max-h-[520px] object-contain"
         />
+</div>
 
         <div className="p-6 space-y-5">
           <div className="flex justify-between">
