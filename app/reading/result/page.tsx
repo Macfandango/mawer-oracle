@@ -947,10 +947,10 @@ export default function ReadingResult() {
           </div>
 
           <a
-  href={`/reading/loading?intent=${Math.random().toString(36).slice(2)}`}
+  href="/intention"
   className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
 >
-  Проверить еще 1 намерение
+  Проверить ещё 1 намерение
 </a>
         </div>
       </div>
