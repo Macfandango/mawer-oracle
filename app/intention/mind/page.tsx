@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 declare global {
@@ -22,7 +21,7 @@ declare global {
 }
 
 export default function MindIntentionPage() {
-  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +48,7 @@ export default function MindIntentionPage() {
     setLoading(false);
 
     if (!error) {
-      router.push(`/reading/loading?readingId=${readingId}`);
+      window.location.href = `/reading/loading?readingId=${readingId}`;
     }
   };
 

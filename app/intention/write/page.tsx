@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 declare global {
@@ -22,7 +21,6 @@ declare global {
 }
 
 export default function WriteIntentionPage() {
-  const router = useRouter();
 
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,7 +49,7 @@ export default function WriteIntentionPage() {
     setLoading(false);
 
     if (!error) {
-      router.push(`/reading/loading?readingId=${readingId}`);
+      window.location.href = `/reading/loading?readingId=${readingId}`;
     }
   };
 
