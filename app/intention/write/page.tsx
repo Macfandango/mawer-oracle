@@ -3,11 +3,27 @@
 import { useEffect, useState } from "react";
 
 export default function WriteIntentionPage() {
-  const [tgUser, setTgUser] = useState<any>(null);
 
-  useEffect(() => {
-    setTgUser(window.Telegram?.WebApp?.initDataUnsafe?.user || null);
-  }, []);
+ useEffect(() => {
+  const timer = setTimeout(() => {
+    const webApp = window.Telegram?.WebApp;
+    const user = webApp?.initDataUnsafe?.user;
+
+    const setValue = (id: string, value: string) => {
+      const input = document.getElementById(id) as HTMLInputElement | null;
+      if (input) input.value = value || "";
+    };
+
+    setValue("telegram_id", user?.id ? String(user.id) : "");
+    setValue("username", user?.username || "");
+    setValue("first_name", user?.first_name || "");
+    setValue("last_name", user?.last_name || "");
+    setValue("debug_tg_user", user ? JSON.stringify(user) : "");
+    setValue("debug_init_data", (webApp as any)?.initData || "");
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, []);
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
@@ -22,26 +38,12 @@ export default function WriteIntentionPage() {
           <input type="hidden" name="method" value="write" />
           <input type="hidden" name="method" value="mind" />
 
-  <input type="hidden" name="telegram_id" value={tgUser?.id || ""} />
-  <input type="hidden" name="username" value={tgUser?.username || ""} />
-  <input type="hidden" name="first_name" value={tgUser?.first_name || ""} />
-  <input type="hidden" name="last_name" value={tgUser?.last_name || ""} />
-
-  <input
-    type="hidden"
-    name="debug_tg_user"
-    value={tgUser ? JSON.stringify(tgUser) : ""}
-  />
-
-  <input
-    type="hidden"
-    name="debug_init_data"
-    value={
-      typeof window !== "undefined"
-        ? (window.Telegram?.WebApp as any)?.initData || ""
-        : ""
-    }
-  />
+  <input id="telegram_id" type="hidden" name="telegram_id" />
+<input id="username" type="hidden" name="username" />
+<input id="first_name" type="hidden" name="first_name" />
+<input id="last_name" type="hidden" name="last_name" />
+<input id="debug_tg_user" type="hidden" name="debug_tg_user" />
+<input id="debug_init_data" type="hidden" name="debug_init_data" />
 
   <button
     type="submit"
