@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-import SaveCardButton from "@/app/components/SaveCardButton";
 
 const defaultTrack = {
   title: "MAWER Oracle — Track of the Day",
@@ -972,14 +971,21 @@ export default async function Reading({
   </audio>
 </div>
 
-<SaveCardButton
-  card={selectedCard.card}
-  original={selectedCard.original}
-  rarity={selectedCard.rarity}
-  rarityColor={selectedCard.rarityColor}
-  meaning={selectedCard.meaning}
-  trackTitle={defaultTrack.title}
-/>
+<a
+  href={`/api/share-card?card=${encodeURIComponent(
+    selectedCard.card
+  )}&original=${encodeURIComponent(
+    selectedCard.original
+  )}&meaning=${encodeURIComponent(
+    selectedCard.meaning
+  )}&rarity=${encodeURIComponent(
+    selectedCard.rarity
+  )}&track=${encodeURIComponent(defaultTrack.title)}`}
+  target="_blank"
+  className="block w-full bg-fuchsia-500 text-white py-4 rounded-2xl font-bold text-center"
+>
+  Сохранить свою карту
+</a>
 
           <a
             href="/intention"
