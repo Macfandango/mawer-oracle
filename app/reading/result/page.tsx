@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import SaveCardButton from "@/app/components/SaveCardButton";
 
 const defaultTrack = {
   title: "MAWER Oracle — Track of the Day",
@@ -17,7 +18,6 @@ type Card = {
   meaning: string;
   tracks: string[];
   artwork: string;
-soundcloudEmbed?: string;
 };
 
 const cards: Card[] = [
@@ -971,6 +971,16 @@ export default async function Reading({
     <source src={defaultTrack.audioUrl} type="audio/mpeg" />
   </audio>
 </div>
+
+<SaveCardButton
+  card={selectedCard.card}
+  original={selectedCard.original}
+  rarity={selectedCard.rarity}
+  rarityColor={selectedCard.rarityColor}
+  meaning={selectedCard.meaning}
+  artwork={selectedCard.artwork}
+  trackTitle={defaultTrack.title}
+/>
 
           <a
             href="/intention"
