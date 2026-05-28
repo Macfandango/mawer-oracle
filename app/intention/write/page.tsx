@@ -38,7 +38,7 @@ export default function WriteIntentionPage() {
     name="debug_init_data"
     value={
       typeof window !== "undefined"
-        ? window.Telegram?.WebApp?.initData || ""
+        ? (window.Telegram?.WebApp as any)?.initData || ""
         : ""
     }
   />
