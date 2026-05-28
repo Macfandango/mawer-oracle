@@ -28,7 +28,7 @@ const cards: Card[] = [
     chance: "4%",
     weight: 5,
     meaning: "Новый путь, риск, свобода и шаг в неизвестность. Сегодня день, когда можно начать иначе.",
-    artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_00_Fool.jpg",
+    artwork: "/cards/fool.jpg",
 tracks: ["Mystic Ambient"],
   },
   {
@@ -892,8 +892,7 @@ function shuffleDeck(deck: Card[]) {
 }
 
 function drawOneCard() {
-  const shuffledDeck = shuffleDeck(cards);
-  return shuffledDeck[0];
+  return cards.find((card) => card.card === "Шут") || cards[0];
 }
 
 function pickRandomTrack(tracks: string[]) {
