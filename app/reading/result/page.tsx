@@ -1,7 +1,6 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 type Card = {
   card: string;
@@ -896,51 +895,82 @@ function pickRandomTrack(tracks: string[]) {
   return tracks[Math.floor(Math.random() * tracks.length)];
 }
 
-export default function Reading() {
-  const [readingId, setReadingId] = useState<string | null>(null);
+export default async function Reading({
+  searchParams,
+}: {
+  searchParams: Promise<{ readingId?: string; shuffle?: string }>;
+}) {
+  const params = await searchParams;
+  const readingId = params.readingId || "";
 
-useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  setReadingId(params.get("readingId"));
-}, []);
+  const selectedCard = drawOneCard();
+  const selectedTrack = pickRandomTrack(selectedCard.tracks);
 
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
-  const [selectedTrack, setSelectedTrack] = useState<string>("");
-
-  useEffect(() => {
-    const card = drawOneCard();
-    const track = pickRandomTrack(card.tracks);
-
-    setSelectedCard(card);
-    setSelectedTrack(track);
-  }, []);
-
-  useEffect(() => {
-    if (!readingId || !selectedCard) return;
-
-    const updateCard = async () => {
-      const { data, error } = await supabase
-        .from("intentions")
-        .update({
-          card_name: selectedCard.card,
-        })
-        .eq("reading_id", readingId)
-        .select();
-
-      console.log("CARD UPDATE DATA:", data);
-      console.log("CARD UPDATE ERROR:", error);
-    };
-
-    updateCard();
-  }, [readingId, selectedCard]);
-
-  if (!selectedCard) {
-    return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
-        <p className="text-zinc-500">Открываю карту...</p>
-      </main>
-    );
+  if (readingId) {
+    await supabase
+      .from("intentions")
+      .update({
+        card_name: selectedCard.card,
+      })
+      .eq("reading_id", readingId);
   }
+
+  return (
+    <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
+      <div className="max-w-md w-full rounded-[32px] overflow-hidden bg-zinc-950 border border-zinc-800">
+        <div className="bg-black flex items-center justify-center">
+          <img
+            src={selectedCard.artwork}
+            alt={selectedCard.card}
+            className="w-full max-h-[520px] object-contain"
+          />
+        </div>
+
+        <div className="p-6 space-y-5">
+          <div className="flex justify-between">
+            <p className={`${selectedCard.rarityColor} text-xs tracking-[0.3em] font-bold`}>
+              {selectedCard.rarity}
+            </p>
+
+            <p className="text-zinc-500 text-xs">КАРТА ДНЯ</p>
+          </div>
+
+          <h2 className="text-4xl font-bold">{selectedCard.card}</h2>
+
+          <p className="text-zinc-500 text-sm">{selectedCard.original}</p>
+
+          <p className="text-zinc-300 leading-relaxed">
+            {selectedCard.meaning}
+          </p>
+
+          <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
+            <p className="text-xs text-zinc-500 mb-1">РЕДКОСТЬ</p>
+
+            <p className={`text-lg font-bold ${selectedCard.rarityColor}`}>
+              {selectedCard.rarity}
+            </p>
+
+            <p className="text-zinc-400 text-sm mt-2">
+              Только {selectedCard.chance} пользователей получили эту карту сегодня.
+            </p>
+          </div>
+
+          <div className="bg-zinc-900 rounded-2xl p-4">
+            <p className="text-zinc-500 text-xs mb-1">ТРЕК ДНЯ</p>
+            <p className="text-lg">{selectedTrack}</p>
+          </div>
+
+          <a
+            href="/intention"
+            className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
+          >
+            Проверить ещё 1 намерение
+          </a>
+        </div>
+      </div>
+    </main>
+  );
+}
 
   return (
 
