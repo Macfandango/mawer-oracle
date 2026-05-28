@@ -978,7 +978,6 @@ export default async function Reading({
   rarity={selectedCard.rarity}
   rarityColor={selectedCard.rarityColor}
   meaning={selectedCard.meaning}
-  artwork={selectedCard.artwork}
   trackTitle={defaultTrack.title}
 />
 
