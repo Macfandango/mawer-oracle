@@ -9,7 +9,6 @@ type SaveCardButtonProps = {
   rarity: string;
   rarityColor: string;
   meaning: string;
-  artwork: string;
   trackTitle: string;
 };
 
@@ -19,17 +18,17 @@ export default function SaveCardButton({
   rarity,
   rarityColor,
   meaning,
-  artwork,
   trackTitle,
 }: SaveCardButtonProps) {
   const shareRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
 
-  const saveImage = async () => {
-    if (!shareRef.current || loading) return;
+const saveImage = async () => {
+  if (!shareRef.current || loading) return;
 
-    setLoading(true);
+  setLoading(true);
 
+  try {
     const dataUrl = await toPng(shareRef.current, {
       cacheBust: true,
       pixelRatio: 2,
@@ -40,9 +39,13 @@ export default function SaveCardButton({
     link.download = `mawer-oracle-${card}.png`;
     link.href = dataUrl;
     link.click();
-
+  } catch (error) {
+    console.error("SAVE IMAGE ERROR:", error);
+    alert("Не получилось сохранить картинку. Попробуй ещё раз.");
+  } finally {
     setLoading(false);
-  };
+  }
+};
 
   return (
     <>
@@ -69,12 +72,16 @@ export default function SaveCardButton({
           </div>
 
           <div className="flex justify-center">
-            <img
-              src={artwork}
-              alt={card}
-              className="max-h-[900px] object-contain rounded-3xl"
-            />
-          </div>
+  <div className="w-[700px] h-[900px] rounded-[48px] border border-fuchsia-500/40 bg-zinc-950 flex items-center justify-center text-center p-12">
+    <div>
+      <p className={`${rarityColor} text-4xl tracking-[0.4em] font-bold mb-8`}>
+        {rarity}
+      </p>
+      <p className="text-7xl font-bold leading-tight">{card}</p>
+      <p className="text-zinc-500 text-4xl mt-6">{original}</p>
+    </div>
+  </div>
+</div>
 
           <div className="space-y-8">
             <p className={`${rarityColor} text-3xl tracking-[0.4em] font-bold`}>
