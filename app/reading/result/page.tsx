@@ -1,5 +1,10 @@
 import { supabase } from "@/lib/supabase";
 
+const defaultTrack = {
+  title: "MAWER Oracle — Track of the Day",
+  audioUrl: "/audio/mawer-oracle.mp3",
+};
+
 export const dynamic = "force-dynamic";
 
 type Card = {
@@ -26,8 +31,6 @@ const cards: Card[] = [
     meaning: "Новый путь, риск, свобода и шаг в неизвестность. Сегодня день, когда можно начать иначе.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_00_Fool.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Маг",
@@ -39,8 +42,6 @@ tracks: ["Mystic Ambient"],
     meaning: "У тебя уже есть ресурсы, чтобы повлиять на ситуацию. Сегодня важны действие, воля и фокус.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_01_Magician.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Верховная Жрица",
@@ -52,8 +53,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Не всё видно сразу. Сегодня лучше слушать интуицию, а не чужой шум.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_02_High_Priestess.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Императрица",
@@ -65,8 +64,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День красоты, тела, удовольствия и мягкой силы. Хорошо выбирать себя.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_03_Empress.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Император",
@@ -78,8 +75,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня нужна структура. Не хаос, а ясное решение и контроль над своим пространством.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_04_Emperor.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Иерофант",
@@ -91,8 +86,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День смыслов, традиций и внутреннего учителя. Возможно, тебе нужен не ответ, а система.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_05_Hierophant.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Влюблённые",
@@ -104,8 +97,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня день выбора сердцем. Может проявиться химия, желание или важная развилка.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_06_Lovers.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Колесница",
@@ -117,8 +108,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Двигайся. Даже если есть сопротивление, сегодня сила в направлении и скорости.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_07_Chariot.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Сила",
@@ -130,8 +119,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Твоя сила сегодня не в давлении, а в спокойной уверенности. Мягкость может победить.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_08_Strength.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Отшельник",
@@ -143,8 +130,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День тишины, наблюдения и внутреннего света. Ответ лучше искать не снаружи.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_09_Hermit.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Колесо Фортуны",
@@ -156,8 +141,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня может случиться поворот. Не всё под контролем, но момент может сыграть за тебя.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_10_Wheel_of_Fortune.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Справедливость",
@@ -169,8 +152,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня всё про честность, баланс и последствия. Выбирай то, за что готова отвечать.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_11_Justice.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Повешенный",
@@ -182,8 +163,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Пауза не значит проигрыш. Сегодня нужно посмотреть на ситуацию с другой стороны.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_12_Hanged_Man.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Смерть",
@@ -195,8 +174,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Что-то завершается, чтобы освободить место новому. Не держись за старую версию дня.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_13_Death.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Умеренность",
@@ -208,8 +185,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День восстановления и баланса. Не надо резко — сегодня работает мягкая настройка.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_14_Temperance.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Дьявол",
@@ -221,8 +196,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Что-то сегодня будет слишком притягательным. Вопрос — ты выбираешь это или оно выбирает тебя?",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_15_Devil.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Башня",
@@ -234,8 +207,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День резкой правды. То, что шаталось, может показать свою настоящую форму.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_16_Tower.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Звезда",
@@ -247,8 +218,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Надежда возвращается. Сегодня важно поверить, что ты не зря идёшь дальше.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_17_Star.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Луна",
@@ -260,8 +229,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День интуиции, снов, тревожных знаков и скрытых чувств. Не всё является тем, чем кажется.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_18_Moon.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Солнце",
@@ -273,8 +240,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня день ясности, света и живой энергии. Хорошо делать то, что возвращает радость.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_19_Sun.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Суд",
@@ -286,8 +251,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня может прийти осознание. Старый сюжет просит финального решения.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_20_Judgement.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Мир",
@@ -299,10 +262,8 @@ tracks: ["Mystic Ambient"],
     meaning: "Цикл закрывается красиво. Сегодня есть ощущение завершённости, силы и нового уровня.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/RWS_Tarot_21_World.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
-{
+  {
     card: "Туз Кубков",
     original: "Ace of Cups",
     rarity: "РЕДКАЯ",
@@ -312,8 +273,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Эмоции сегодня будут настоящими. День чувств, вдохновения и открытого сердца.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups01.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Двойка Кубков",
@@ -325,8 +284,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня может возникнуть сильная связь или эмоциональное совпадение.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups02.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Тройка Кубков",
@@ -338,8 +295,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День общения, лёгкости и людей, рядом с которыми можно выдохнуть.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups03.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Четвёрка Кубков",
@@ -351,8 +306,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня легко застрять в своих мыслях. Попробуй заметить, что жизнь всё ещё предлагает тебе.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups04.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Пятёрка Кубков",
@@ -364,8 +317,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Что-то может задеть эмоционально. Но не всё потеряно — часть хорошего всё ещё рядом.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups05.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Шестёрка Кубков",
@@ -377,8 +328,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня прошлое может напомнить о себе — через музыку, человека или чувство.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups06.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Семёрка Кубков",
@@ -390,8 +339,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня много иллюзий и вариантов. Не всё, что красиво выглядит, реально нужно тебе.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups07.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Восьмёрка Кубков",
@@ -403,8 +350,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Пришло время уходить от того, что больше не наполняет.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups08.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Девятка Кубков",
@@ -416,8 +361,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Карта удовольствия и исполнения желаний. Сегодня можно позволить себе радость.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups09.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Десятка Кубков",
@@ -429,8 +372,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Очень тёплая карта. День эмоциональной гармонии, любви и ощущения «дома».",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups10.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Паж Кубков",
@@ -442,8 +383,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Неожиданное сообщение, флирт или эмоциональный импульс могут изменить настроение дня.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups11.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Рыцарь Кубков",
@@ -455,8 +394,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня кто-то может красиво ворваться в твоё пространство — или ты станешь этим человеком.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups12.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Королева Кубков",
@@ -468,8 +405,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Очень сильная эмоциональная карта. Сегодня интуиция и чувства будут точнее логики.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups13.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Король Кубков",
@@ -481,9 +416,7 @@ tracks: ["Mystic Ambient"],
     meaning: "Контроль над эмоциями сегодня даст силу. Не подавлять — а понимать себя.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Cups14.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
-  },
+ },
  {
     card: "Туз Жезлов",
     original: "Ace of Wands",
@@ -494,8 +427,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня день импульса, желания и новой искры. Хорошо начинать то, что давно просилось наружу.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands01.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Двойка Жезлов",
@@ -507,8 +438,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Ты стоишь перед выбором направления. День планов, амбиций и взгляда шире привычного.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands02.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Тройка Жезлов",
@@ -520,8 +449,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Твой шаг уже сделан. Сегодня важно не сомневаться, а ждать первых сигналов от мира.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands03.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Четвёрка Жезлов",
@@ -533,8 +460,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День праздника, дома, людей и маленькой победы. Можно разрешить себе радость.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands04.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Пятёрка Жезлов",
@@ -546,8 +471,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня может быть шумно: споры, конкуренция, столкновение желаний. Не трать силу на хаос.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands05.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Шестёрка Жезлов",
@@ -559,8 +482,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Карта признания. Сегодня тебя могут заметить, оценить или дать знак, что ты не зря стараешься.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands06.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Семёрка Жезлов",
@@ -572,8 +493,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня важно защищать своё место. Не всем понравится твоя позиция — и это нормально.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands07.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Восьмёрка Жезлов",
@@ -585,8 +504,6 @@ tracks: ["Mystic Ambient"],
     meaning: "События ускоряются. Возможны сообщения, быстрые решения и неожиданный поворот.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands08.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Девятка Жезлов",
@@ -598,8 +515,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Усталось, но не сломленность. Сегодня важны границы, выносливость и последний рывок.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands09.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Десятка Жезлов",
@@ -611,8 +526,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Слишком много на себе. Сегодня стоит снять хотя бы одну лишнюю ношу.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands10.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Паж Жезлов",
@@ -624,8 +537,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День любопытства, флирта с жизнью и новой идеи. Можно пробовать без идеального плана.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands11.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Рыцарь Жезлов",
@@ -637,8 +548,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Импульс, страсть, скорость. Сегодня легко загореться — главное не сжечь всё вокруг.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands12.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Королева Жезлов",
@@ -650,8 +559,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Очень сильная карта харизмы. Сегодня твоя энергия может притягивать людей без объяснений.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands13.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Король Жезлов",
@@ -663,8 +570,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День лидерства, огня и уверенного решения. Сегодня важно действовать как человек, который уже выбрал себя.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Wands14.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Туз Мечей",
@@ -676,8 +581,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня всё про ясность. Важная мысль, решение или разговор могут многое изменить.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords01.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Двойка Мечей",
@@ -689,8 +592,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Ты не хочешь выбирать — но решение всё равно приближается.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords02.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Тройка Мечей",
@@ -702,8 +603,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Что-то может задеть очень глубоко. Но честная боль лучше красивой иллюзии.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords03.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Четвёрка Мечей",
@@ -715,8 +614,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня нужен отдых. Не всё решается через усилие.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords04.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Пятёрка Мечей",
@@ -728,8 +625,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Не каждый выигранный спор стоит твоей энергии.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords05.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Шестёрка Мечей",
@@ -741,8 +636,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Ты постепенно выходишь из тяжёлого состояния. Пусть даже не сразу.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords06.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Семёрка Мечей",
@@ -754,8 +647,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня не всё будет сказано прямо. Кто-то может играть не совсем честно.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords07.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Восьмёрка Мечей",
@@ -767,8 +658,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Ограничения сегодня могут быть больше в голове, чем в реальности.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords08.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Девятка Мечей",
@@ -780,8 +669,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Тревога может искажать реальность. Сегодня важно не верить каждой страшной мысли.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords09.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Десятка Мечей",
@@ -793,8 +680,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Что-то завершилось окончательно. Но дальше — только новое утро.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords10.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Паж Мечей",
@@ -806,8 +691,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня будет много информации, наблюдений и странных сигналов.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords11.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Рыцарь Мечей",
@@ -819,8 +702,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня всё ускоряется. Слова и решения могут быть резче обычного.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords12.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Королева Мечей",
@@ -832,8 +713,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Очень сильная карта ясности и границ. Сегодня важно сохранять честность прежде всего с собой.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords13.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Король Мечей",
@@ -845,8 +724,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Холодный ум сегодня сильнее эмоций. Решение нужно принимать головой.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Swords14.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Туз Пентаклей",
@@ -858,8 +735,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня может появиться шанс, связанный с деньгами, телом или новой стабильностью.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents01.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Двойка Пентаклей",
@@ -871,8 +746,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня придётся балансировать между несколькими вещами одновременно.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents02.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Тройка Пентаклей",
@@ -884,8 +757,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня особенно важны сотрудничество, навыки и люди рядом.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents03.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Четвёрка Пентаклей",
@@ -897,8 +768,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Ты слишком сильно держишься за контроль. Сегодня можно немного расслабить хватку.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents04.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Пятёрка Пентаклей",
@@ -910,8 +779,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня может ощущаться нехватка — денег, энергии или поддержки. Но помощь ближе, чем кажется.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents05.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Шестёрка Пентаклей",
@@ -923,8 +790,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня всё про обмен. Что ты отдаёшь — и что позволяешь себе принимать.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents06.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Семёрка Пентаклей",
@@ -936,8 +801,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Результат ещё не созрел. Сегодня важно терпение.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents07.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Восьмёрка Пентаклей",
@@ -949,8 +812,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День концентрации и мастерства. Хорошо углубляться в работу или навык.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents08.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Девятка Пентаклей",
@@ -962,8 +823,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Карта удовольствия, красоты и независимости. Сегодня можно почувствовать себя очень «в своей жизни».",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents09.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Десятка Пентаклей",
@@ -975,8 +834,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Очень сильная карта стабильности, семьи и долгосрочной опоры.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents10.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Паж Пентаклей",
@@ -988,9 +845,7 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня может появиться идея, которая позже превратится во что-то большое.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents11.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
-  },
+    },
   {
     card: "Рыцарь Пентаклей",
     original: "Knight of Pentacles",
@@ -1001,8 +856,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Медленно — не значит плохо. Сегодня сила в стабильности и последовательности.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents12.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Королева Пентаклей",
@@ -1014,8 +867,6 @@ tracks: ["Mystic Ambient"],
     meaning: "Сегодня особенно важны забота о себе, красота пространства и чувство внутренней ценности.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents13.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
   {
     card: "Король Пентаклей",
@@ -1027,8 +878,6 @@ tracks: ["Mystic Ambient"],
     meaning: "День взрослой силы, денег и устойчивости. Сегодня хорошо думать о большом и долгом.",
     artwork: "https://commons.wikimedia.org/wiki/Special:FilePath/Pents14.jpg",
 tracks: ["Mystic Ambient"],
-  soundcloudEmbed:
-    "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/186046184&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false",
   },
 ];
 
@@ -1115,20 +964,12 @@ export default async function Reading({
           <div className="bg-zinc-900 rounded-2xl p-4 space-y-3">
   <div>
     <p className="text-zinc-500 text-xs mb-1">ТРЕК ДНЯ</p>
-    <p className="text-lg">{selectedTrack}</p>
+    <p className="text-lg">{defaultTrack.title}</p>
   </div>
 
-  {selectedCard.soundcloudEmbed && (
-    <iframe
-      width="100%"
-      height="166"
-      scrolling="no"
-      frameBorder="no"
-      allow="autoplay"
-      src={selectedCard.soundcloudEmbed}
-      className="rounded-2xl overflow-hidden"
-    />
-  )}
+  <audio controls className="w-full">
+    <source src={defaultTrack.audioUrl} type="audio/mpeg" />
+  </audio>
 </div>
 
           <a
