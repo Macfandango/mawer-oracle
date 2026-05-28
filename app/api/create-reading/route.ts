@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const debug_tg_user = searchParams.get("debug_tg_user");
-const debug_init_data = searchParams.get("debug_init_data");
-
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -11,6 +8,8 @@ const supabase = createClient(
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+const debug_tg_user = searchParams.get("debug_tg_user");
+const debug_init_data = searchParams.get("debug_init_data");
 
   const method = searchParams.get("method") || "unknown";
   const intention = searchParams.get("intention");
