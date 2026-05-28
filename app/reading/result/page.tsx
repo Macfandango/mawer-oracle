@@ -980,9 +980,9 @@ export default async function Reading({
     selectedCard.meaning
   )}&rarity=${encodeURIComponent(
     selectedCard.rarity
-  )&track=${encodeURIComponent(
-  defaultTrack.title
-)}&artwork=${encodeURIComponent(selectedCard.artwork)}`}
+  )}&track=${encodeURIComponent(
+    defaultTrack.title
+  )}&artwork=${encodeURIComponent(selectedCard.artwork)}`}
   target="_blank"
   className="block w-full bg-fuchsia-500 text-white py-4 rounded-2xl font-bold text-center"
 >
