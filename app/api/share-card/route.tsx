@@ -10,8 +10,13 @@ export async function GET(request: Request) {
   const meaning = searchParams.get("meaning") || "";
   const rarity = searchParams.get("rarity") || "";
   const track = searchParams.get("track") || "";
-  ? `${origin}${artworkParam}`
-  : artworkParam;
+
+  const artworkParam = searchParams.get("artwork") || "";
+  const origin = new URL(request.url).origin;
+
+  const artwork = artworkParam.startsWith("/")
+    ? `${origin}${artworkParam}`
+    : artworkParam;
 
   return new ImageResponse(
     (
