@@ -20,21 +20,36 @@ export default function WriteIntentionPage() {
 
         <form action="/api/create-reading" method="GET" className="space-y-6">
           <input type="hidden" name="method" value="write" />
-          <input type="hidden" name="telegram_id" value={tgUser?.id || ""} />
-          <input type="hidden" name="username" value={tgUser?.username || ""} />
-          <input type="hidden" name="first_name" value={tgUser?.first_name || ""} />
-          <input type="hidden" name="last_name" value={tgUser?.last_name || ""} />
+          <input type="hidden" name="method" value="mind" />
 
-          <textarea
-            name="intention"
-            placeholder="Например: что мне важно понять прямо сейчас?"
-            className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
-          />
+  <input type="hidden" name="telegram_id" value={tgUser?.id || ""} />
+  <input type="hidden" name="username" value={tgUser?.username || ""} />
+  <input type="hidden" name="first_name" value={tgUser?.first_name || ""} />
+  <input type="hidden" name="last_name" value={tgUser?.last_name || ""} />
 
-          <button type="submit" className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg">
-            Получить карту
-          </button>
-        </form>
+  <input
+    type="hidden"
+    name="debug_tg_user"
+    value={tgUser ? JSON.stringify(tgUser) : ""}
+  />
+
+  <input
+    type="hidden"
+    name="debug_init_data"
+    value={
+      typeof window !== "undefined"
+        ? window.Telegram?.WebApp?.initData || ""
+        : ""
+    }
+  />
+
+  <button
+    type="submit"
+    className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
+  >
+    Получить карту
+  </button>
+</form>
       </div>
     </main>
   );

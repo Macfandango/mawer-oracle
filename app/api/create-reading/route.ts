@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+const debug_tg_user = searchParams.get("debug_tg_user");
+const debug_init_data = searchParams.get("debug_init_data");
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -19,6 +22,8 @@ const last_name = searchParams.get("last_name");
 
   await supabase.from("intentions").insert([
     {
+debug_tg_user,
+debug_init_data,
 telegram_id,
 username,
 first_name,
