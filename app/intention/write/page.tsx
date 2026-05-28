@@ -6,7 +6,7 @@ export default function WriteIntentionPage() {
 
  useEffect(() => {
   const timer = setTimeout(() => {
-    const webApp = window.Telegram?.WebApp;
+   const webApp = (window as any).Telegram?.WebApp;
     const user = webApp?.initDataUnsafe?.user;
 
     const setValue = (id: string, value: string) => {
