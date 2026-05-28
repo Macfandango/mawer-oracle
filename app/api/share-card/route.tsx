@@ -10,6 +10,7 @@ export async function GET(request: Request) {
   const meaning = searchParams.get("meaning") || "";
   const rarity = searchParams.get("rarity") || "";
   const track = searchParams.get("track") || "";
+const artwork = searchParams.get("artwork") || "";
 
   return new ImageResponse(
     (
@@ -64,6 +65,27 @@ export async function GET(request: Request) {
             {original}
           </div>
         </div>
+
+{artwork && (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flex: 1,
+    }}
+  >
+    <img
+      src={artwork}
+      width="520"
+      height="820"
+      style={{
+        objectFit: "contain",
+        borderRadius: 24,
+      }}
+    />
+  </div>
+)}
 
         <div
           style={{
