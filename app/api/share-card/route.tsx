@@ -18,6 +18,14 @@ export async function GET(request: Request) {
     ? `${origin}${artworkParam}`
     : artworkParam;
 
+let artworkBase64 = "";
+
+if (artwork) {
+  const imageRes = await fetch(artwork);
+  const imageBuffer = await imageRes.arrayBuffer();
+  artworkBase64 = `data:image/jpeg;base64,${Buffer.from(imageBuffer).toString("base64")}`;
+}
+
   return new ImageResponse(
     (
       <div
@@ -72,7 +80,7 @@ export async function GET(request: Request) {
           </div>
         </div>
 
-{artwork && (
+{artworkBase64 && (
   <div
     style={{
       display: "flex",
@@ -82,7 +90,7 @@ export async function GET(request: Request) {
     }}
   >
     <img
-      src={artwork}
+      src={artworkBase64}
       width="520"
       height="820"
       style={{
