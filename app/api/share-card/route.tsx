@@ -11,7 +11,11 @@ export async function GET(request: Request) {
   const baseResponse = await fetch(baseImageUrl);
   const baseImage = Buffer.from(await baseResponse.arrayBuffer());
 
-  const cardImagePath = path.join(process.cwd(), "public", "cards", "fool.png");
+  const { searchParams } = new URL(request.url);
+const artwork = searchParams.get("artwork") || "/cards/fool.png";
+
+const safeArtwork = artwork.replace(/^\/+/, "");
+const cardImagePath = path.join(process.cwd(), "public", safeArtwork);
   const cardImage = await readFile(cardImagePath);
 
   const resizedCard = await sharp(cardImage)
