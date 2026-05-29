@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function WriteIntentionPage() {
+	const [submitting, setSubmitting] = useState(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const webApp = (window as any).Telegram?.WebApp;
@@ -41,7 +43,11 @@ export default function WriteIntentionPage() {
           </p>
         </div>
 
-        <form action="/api/create-reading" method="GET" className="space-y-6">
+        <form
+          action="/api/create-reading"
+          method="GET"
+          onSubmit={() => setSubmitting(true)}
+        >
           <input type="hidden" name="method" value="write" />
 
           <input id="telegram_id" type="hidden" name="telegram_id" />
@@ -59,9 +65,14 @@ export default function WriteIntentionPage() {
 
           <button
             type="submit"
-            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
+            disabled={submitting}
+            className={`w-full py-5 rounded-3xl font-bold text-lg ${
+              submitting
+                ? "bg-zinc-500 text-zinc-300 pointer-events-none"
+                : "bg-white text-black"
+            }`}
           >
-            Получить карту
+            {submitting ? "Открываю карту..." : "Получить карту"}
           </button>
         </form>
       </div>
