@@ -25,6 +25,28 @@ export async function GET(request: Request) {
   const local_day_key = searchParams.get("local_day_key");
   const local_timezone_offset = searchParams.get("timezone_offset");
 
+  const cookieHeader = request.headers.get("cookie") || "";
+  const existingDeviceId = cookieHeader
+    .split("; ")
+    .find((row) => row.startsWith("mawer_device_id="))
+    ?.split("=")[1];
+
+  const device_id = existingDeviceId || crypto.randomUUID();
+
+  const redirectWithCookie = (url: URL) => {
+    const response = NextResponse.redirect(url);
+
+    response.cookies.set("mawer_device_id", device_id, {
+      maxAge: 60 * 60 * 24 * 365,
+      path: "/",
+      sameSite: "lax",
+      secure: true,
+      httpOnly: true,
+    });
+
+    return response;
+  };
+
   if (request_id) {
     const { data: existingReading } = await supabase
       .from("intentions")
@@ -34,7 +56,7 @@ export async function GET(request: Request) {
       .maybeSingle();
 
     if (existingReading?.reading_id) {
-      return NextResponse.redirect(
+      return redirectWithCookie(
         new URL(
           `/reading/loading?readingId=${existingReading.reading_id}`,
           request.url
@@ -72,8 +94,21 @@ export async function GET(request: Request) {
       todayReading = data;
     }
 
+    if (!todayReading && device_id) {
+      const { data } = await supabase
+        .from("intentions")
+        .select("reading_id")
+        .eq("device_id", device_id)
+        .eq("local_day_key", local_day_key)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      todayReading = data;
+    }
+
     if (todayReading?.reading_id) {
-      return NextResponse.redirect(
+      return redirectWithCookie(
         new URL(
           `/reading/result?readingId=${todayReading.reading_id}&locked=1`,
           request.url
@@ -96,7 +131,7 @@ export async function GET(request: Request) {
       .maybeSingle();
 
     if (recentReading?.reading_id) {
-      return NextResponse.redirect(
+      return redirectWithCookie(
         new URL(
           `/reading/loading?readingId=${recentReading.reading_id}`,
           request.url
@@ -109,6 +144,7 @@ export async function GET(request: Request) {
 
   await supabase.from("intentions").insert([
     {
+      device_id,
       anonymous_id,
       local_day_key,
       local_timezone_offset,
@@ -126,7 +162,7 @@ export async function GET(request: Request) {
     },
   ]);
 
-  return NextResponse.redirect(
+  return redirectWithCookie(
     new URL(`/reading/loading?readingId=${readingId}`, request.url)
   );
 }
