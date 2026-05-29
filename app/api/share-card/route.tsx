@@ -8,17 +8,25 @@ function esc(text: string) {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function textSvg(text: string, size: number, color: string, weight = 400) {
-  return Buffer.from(`
-    <svg width="900" height="140" xmlns="http://www.w3.org/2000/svg">
-      <style>
-        text { font-family: sans-serif; font-weight: ${weight}; }
-      </style>
-      <text x="0" y="${size + 10}" fill="${color}" font-size="${size}">
-        ${esc(text)}
-      </text>
-    </svg>
-  `);
+async function textLayer(
+  text: string,
+  width: number,
+  height: number,
+  size: number,
+  color: string,
+  fontfile: string
+) {
+  return sharp({
+    text: {
+      text: `<span foreground="${color}" font_desc="Noto Sans ${size}">${esc(text)}</span>`,
+      width,
+      height,
+      rgba: true,
+      fontfile,
+    },
+  })
+    .png()
+    .toBuffer();
 }
 
 export async function GET(request: Request) {
@@ -28,6 +36,19 @@ export async function GET(request: Request) {
   const original = searchParams.get("original") || "";
   const meaning = searchParams.get("meaning") || "";
   const rarity = searchParams.get("rarity") || "";
+const regularFontPath = path.join(
+  process.cwd(),
+  "public",
+  "fonts",
+  "NotoSans-Regular.ttf"
+);
+
+const boldFontPath = path.join(
+  process.cwd(),
+  "public",
+  "fonts",
+  "NotoSans-Bold.ttf"
+);
   const track = searchParams.get("track") || "";
 
   const cardImagePath = path.join(process.cwd(), "public", "cards", "fool.png");
@@ -57,31 +78,103 @@ export async function GET(request: Request) {
     </svg>
   `);
 
-  const meaningSvg = Buffer.from(`
-    <svg width="820" height="170" xmlns="http://www.w3.org/2000/svg">
-      <foreignObject x="0" y="0" width="820" height="170">
-        <div xmlns="http://www.w3.org/1999/xhtml"
-          style="color:white;font-size:38px;line-height:1.32;font-family:sans-serif;">
-          ${esc(meaning)}
-        </div>
-      </foreignObject>
-    </svg>
-  `);
-
   const image = await sharp(bg)
     .composite([
-      { input: textSvg("MAWER ORACLE", 28, "#d946ef", 700), top: 80, left: 80 },
-      { input: textSvg(card, 76, "#ffffff", 700), top: 150, left: 80 },
-      { input: textSvg(original, 34, "#888888"), top: 245, left: 80 },
+  {
+    input: await textLayer(
+      "MAWER ORACLE",
+      900,
+      80,
+      28,
+      "#d946ef",
+      boldFontPath
+    ),
+    top: 80,
+    left: 80,
+  },
 
-      { input: resizedCard, top: 420, left: 290 },
+  {
+    input: await textLayer(
+      card,
+      900,
+      120,
+      76,
+      "#ffffff",
+      boldFontPath
+    ),
+    top: 150,
+    left: 80,
+  },
 
-      { input: infoBox, top: 1320, left: 80 },
-      { input: textSvg(rarity, 28, "#d946ef", 700), top: 1360, left: 130 },
-      { input: meaningSvg, top: 1440, left: 130 },
-      { input: textSvg("ТРЕК ДНЯ", 24, "#666666"), top: 1650, left: 130 },
-      { input: textSvg(track, 28, "#ffffff"), top: 1695, left: 130 },
-    ])
+  {
+    input: await textLayer(
+      original,
+      900,
+      60,
+      34,
+      "#888888",
+      regularFontPath
+    ),
+    top: 245,
+    left: 80,
+  },
+
+  { input: resizedCard, top: 420, left: 290 },
+
+  { input: infoBox, top: 1320, left: 80 },
+
+  {
+    input: await textLayer(
+      rarity,
+      820,
+      60,
+      28,
+      "#d946ef",
+      boldFontPath
+    ),
+    top: 1360,
+    left: 130,
+  },
+
+  {
+    input: await textLayer(
+      meaning,
+      820,
+      180,
+      38,
+      "#ffffff",
+      regularFontPath
+    ),
+    top: 1440,
+    left: 130,
+  },
+
+  {
+    input: await textLayer(
+      "ТРЕК ДНЯ",
+      300,
+      40,
+      24,
+      "#666666",
+      regularFontPath
+    ),
+    top: 1650,
+    left: 130,
+  },
+
+  {
+    input: await textLayer(
+      track,
+      820,
+      50,
+      28,
+      "#ffffff",
+      regularFontPath
+    ),
+    top: 1695,
+    left: 130,
+  },
+])
     .png()
     .toBuffer();
 
