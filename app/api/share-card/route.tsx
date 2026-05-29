@@ -11,28 +11,8 @@ export async function GET(request: Request) {
   const rarity = searchParams.get("rarity") || "";
   const track = searchParams.get("track") || "";
 
-  const artworkParam = searchParams.get("artwork") || "";
-  const origin = new URL(request.url).origin;
-
-  const artwork = artworkParam.startsWith("/")
-    ? `${origin}${artworkParam}`
-    : artworkParam;
-
-let artworkBase64 = "";
-
-if (artwork) {
-  const imageRes = await fetch(artwork);
-  const imageBuffer = await imageRes.arrayBuffer();
-
-  const bytes = new Uint8Array(imageBuffer);
-  let binary = "";
-
-  for (let i = 0; i < bytes.length; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-
-  artworkBase64 = `data:image/jpeg;base64,${btoa(binary)}`;
-}
+const origin = new URL(request.url).origin;
+const artwork = `${origin}/cards/fool.jpg`;
 
   return new ImageResponse(
     (
@@ -88,7 +68,7 @@ if (artwork) {
           </div>
         </div>
 
-{artworkBase64 && (
+{artwork && (
   <div
     style={{
       display: "flex",
@@ -98,7 +78,7 @@ if (artwork) {
     }}
   >
     <img
-      src={artworkBase64}
+      src={artwork}
       width="500"
       height="760"
       style={{
