@@ -5,8 +5,32 @@ import { useEffect, useState } from "react";
 export default function MindIntentionPage() {
   const [submitting, setSubmitting] = useState(false);
 const [requestId] = useState(() => crypto.randomUUID());
+const [anonymousId, setAnonymousId] = useState("");
+const [localDayKey, setLocalDayKey] = useState("");
+const [timezoneOffset, setTimezoneOffset] = useState("");
 
   useEffect(() => {
+let storedAnonymousId = localStorage.getItem("mawer_anonymous_id");
+
+if (!storedAnonymousId) {
+  storedAnonymousId = crypto.randomUUID();
+  localStorage.setItem("mawer_anonymous_id", storedAnonymousId);
+}
+
+const now = new Date();
+const dailyBoundary = new Date(now);
+
+dailyBoundary.setHours(6, 0, 0, 0);
+
+if (now < dailyBoundary) {
+  dailyBoundary.setDate(dailyBoundary.getDate() - 1);
+}
+
+const dayKey = dailyBoundary.toISOString().slice(0, 10);
+
+setAnonymousId(storedAnonymousId);
+setLocalDayKey(dayKey);
+setTimezoneOffset(String(now.getTimezoneOffset()));
     const timer = setTimeout(() => {
       const webApp = (window as any).Telegram?.WebApp;
       const user = webApp?.initDataUnsafe?.user;
@@ -70,6 +94,9 @@ setSubmitting(true);
           <input id="last_name" type="hidden" name="last_name" />
           <input id="debug_tg_user" type="hidden" name="debug_tg_user" />
           <input id="debug_init_data" type="hidden" name="debug_init_data" />
+<input type="hidden" name="anonymous_id" value={anonymousId} />
+<input type="hidden" name="local_day_key" value={localDayKey} />
+<input type="hidden" name="timezone_offset" value={timezoneOffset} />
 
 <button
   id="draw-card-btn-mind"
