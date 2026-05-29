@@ -41,7 +41,17 @@ export async function GET(request: Request) {
   <div style={{ fontSize: 30 }}>{track}</div>
 </div>
 	
-<div style={{ borderTop: "1px solid #222", paddingTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>
+<div
+  style={{
+    borderTop: "1px solid #222",
+    paddingTop: 24,
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+    alignItems: "center",
+    textAlign: "center",
+  }}
+>
   <div style={{ color: "#d946ef", fontSize: 24, fontWeight: 700 }}>
     ✨ Получено в MAWER ORACLE
   </div>
