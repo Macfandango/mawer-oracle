@@ -5,33 +5,33 @@ import { readFile } from "fs/promises";
 export const runtime = "nodejs";
 
 function esc(text: string) {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function textSvg(text: string, size: number, color: string, weight = 400) {
+  return Buffer.from(`
+    <svg width="900" height="140" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        text { font-family: sans-serif; font-weight: ${weight}; }
+      </style>
+      <text x="0" y="${size + 10}" fill="${color}" font-size="${size}">
+        ${esc(text)}
+      </text>
+    </svg>
+  `);
 }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
-  const card = esc(searchParams.get("card") || "Карта");
-  const original = esc(searchParams.get("original") || "");
-  const meaning = esc(searchParams.get("meaning") || "");
-  const rarity = esc(searchParams.get("rarity") || "");
-  const track = esc(searchParams.get("track") || "");
-
-const regularFont = await readFile(
-  path.join(process.cwd(), "public", "fonts", "NotoSans-Regular.ttf")
-);
-
-const boldFont = await readFile(
-  path.join(process.cwd(), "public", "fonts", "NotoSans-Bold.ttf")
-);
-
-const regularFontBase64 = regularFont.toString("base64");
-const boldFontBase64 = boldFont.toString("base64");
+  const card = searchParams.get("card") || "Карта";
+  const original = searchParams.get("original") || "";
+  const meaning = searchParams.get("meaning") || "";
+  const rarity = searchParams.get("rarity") || "";
+  const track = searchParams.get("track") || "";
 
   const cardImagePath = path.join(process.cwd(), "public", "cards", "fool.png");
+
   const cardImage = await readFile(cardImagePath);
 
   const resizedCard = await sharp(cardImage)
@@ -39,62 +39,7 @@ const boldFontBase64 = boldFont.toString("base64");
     .png()
     .toBuffer();
 
-  const svg = `
-  <svg width="1080" height="1920" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <style>
-        @font-face {
-          font-family: 'Noto Sans';
-          src: url(data:font/truetype;charset=utf-8;base64,${regularFontBase64}) format('truetype');
-          font-weight: 400;
-        }
-
-        @font-face {
-          font-family: 'Noto Sans';
-          src: url(data:font/truetype;charset=utf-8;base64,${boldFontBase64}) format('truetype');
-          font-weight: 700;
-        }
-      </style>
-    </defs>
-
-    <rect width="1080" height="1920" fill="#000"/>
-
-    <text x="80" y="120" fill="#d946ef" font-size="28" font-family="Noto Sans" font-weight="700" letter-spacing="12">
-      MAWER ORACLE
-    </text>
-
-    <text x="80" y="210" fill="#fff" font-size="76" font-family="Noto Sans" font-weight="700">
-      ${card}
-    </text>
-
-    <text x="80" y="270" fill="#888" font-size="34" font-family="Noto Sans">
-      ${original}
-    </text>
-
-    <rect x="80" y="1320" width="920" height="420" rx="48" fill="#111" stroke="#4a154f"/>
-
-    <text x="130" y="1395" fill="#d946ef" font-size="28" font-family="Noto Sans" font-weight="700" letter-spacing="8">
-      ${rarity}
-    </text>
-
-    <foreignObject x="130" y="1440" width="820" height="160">
-      <div xmlns="http://www.w3.org/1999/xhtml" style="color:white;font-size:40px;line-height:1.35;font-family:'Noto Sans';">
-        ${meaning}
-      </div>
-    </foreignObject>
-
-    <line x1="130" y1="1635" x2="950" y2="1635" stroke="#222"/>
-
-    <text x="130" y="1685" fill="#666" font-size="24" font-family="Noto Sans">
-      ТРЕК ДНЯ
-    </text>
-
-    <text x="130" y="1730" fill="#fff" font-size="28" font-family="Noto Sans">
-      ${track}
-    </text>
-  </svg>`;
-
-  const image = await sharp({
+  const bg = await sharp({
     create: {
       width: 1080,
       height: 1920,
@@ -102,9 +47,40 @@ const boldFontBase64 = boldFont.toString("base64");
       background: "#000000",
     },
   })
+    .png()
+    .toBuffer();
+
+  const infoBox = Buffer.from(`
+    <svg width="920" height="420" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="920" height="420" rx="48" fill="#111" stroke="#4a154f"/>
+      <line x1="50" y1="315" x2="870" y2="315" stroke="#222"/>
+    </svg>
+  `);
+
+  const meaningSvg = Buffer.from(`
+    <svg width="820" height="170" xmlns="http://www.w3.org/2000/svg">
+      <foreignObject x="0" y="0" width="820" height="170">
+        <div xmlns="http://www.w3.org/1999/xhtml"
+          style="color:white;font-size:38px;line-height:1.32;font-family:sans-serif;">
+          ${esc(meaning)}
+        </div>
+      </foreignObject>
+    </svg>
+  `);
+
+  const image = await sharp(bg)
     .composite([
-      { input: Buffer.from(svg), top: 0, left: 0 },
+      { input: textSvg("MAWER ORACLE", 28, "#d946ef", 700), top: 80, left: 80 },
+      { input: textSvg(card, 76, "#ffffff", 700), top: 150, left: 80 },
+      { input: textSvg(original, 34, "#888888"), top: 245, left: 80 },
+
       { input: resizedCard, top: 420, left: 290 },
+
+      { input: infoBox, top: 1320, left: 80 },
+      { input: textSvg(rarity, 28, "#d946ef", 700), top: 1360, left: 130 },
+      { input: meaningSvg, top: 1440, left: 130 },
+      { input: textSvg("ТРЕК ДНЯ", 24, "#666666"), top: 1650, left: 130 },
+      { input: textSvg(track, 28, "#ffffff"), top: 1695, left: 130 },
     ])
     .png()
     .toBuffer();
