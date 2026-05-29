@@ -9,6 +9,8 @@ const supabase = createClient(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
+  const debug = searchParams.get("debug");
+
   const debug_tg_user = searchParams.get("debug_tg_user");
   const debug_init_data = searchParams.get("debug_init_data");
 
@@ -56,6 +58,18 @@ export async function GET(request: Request) {
       .maybeSingle();
 
     if (existingReading?.reading_id) {
+      if (debug === "1") {
+        return NextResponse.json({
+          matched_by: "request_id",
+          reading_id: existingReading.reading_id,
+          telegram_id,
+          anonymous_id,
+          device_id,
+          local_day_key,
+          request_id,
+        });
+      }
+
       return redirectWithCookie(
         new URL(
           `/reading/loading?readingId=${existingReading.reading_id}`,
@@ -67,6 +81,7 @@ export async function GET(request: Request) {
 
   if (local_day_key) {
     let todayReading: { reading_id: string } | null = null;
+    let matchedBy = "";
 
     if (telegram_id) {
       const { data } = await supabase
@@ -79,6 +94,7 @@ export async function GET(request: Request) {
         .maybeSingle();
 
       todayReading = data;
+      if (data) matchedBy = "telegram_id";
     }
 
     if (!todayReading && anonymous_id) {
@@ -92,6 +108,7 @@ export async function GET(request: Request) {
         .maybeSingle();
 
       todayReading = data;
+      if (data) matchedBy = "anonymous_id";
     }
 
     if (!todayReading && device_id) {
@@ -105,9 +122,22 @@ export async function GET(request: Request) {
         .maybeSingle();
 
       todayReading = data;
+      if (data) matchedBy = "device_id";
     }
 
     if (todayReading?.reading_id) {
+      if (debug === "1") {
+        return NextResponse.json({
+          matched_by: matchedBy,
+          reading_id: todayReading.reading_id,
+          telegram_id,
+          anonymous_id,
+          device_id,
+          local_day_key,
+          request_id,
+        });
+      }
+
       return redirectWithCookie(
         new URL(
           `/reading/result?readingId=${todayReading.reading_id}&locked=1`,
@@ -131,6 +161,18 @@ export async function GET(request: Request) {
       .maybeSingle();
 
     if (recentReading?.reading_id) {
+      if (debug === "1") {
+        return NextResponse.json({
+          matched_by: "telegram_id_10s",
+          reading_id: recentReading.reading_id,
+          telegram_id,
+          anonymous_id,
+          device_id,
+          local_day_key,
+          request_id,
+        });
+      }
+
       return redirectWithCookie(
         new URL(
           `/reading/loading?readingId=${recentReading.reading_id}`,
@@ -138,6 +180,17 @@ export async function GET(request: Request) {
         )
       );
     }
+  }
+
+  if (debug === "1") {
+    return NextResponse.json({
+      matched_by: "new",
+      telegram_id,
+      anonymous_id,
+      device_id,
+      local_day_key,
+      request_id,
+    });
   }
 
   const readingId = crypto.randomUUID();
