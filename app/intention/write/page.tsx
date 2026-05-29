@@ -121,3 +121,7 @@ setTimezoneOffset(String(now.getTimezoneOffset()));
     Получить карту
   </button>
 </form>
+      </div>
+    </main>
+  );
+}
