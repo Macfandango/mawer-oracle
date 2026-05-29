@@ -82,7 +82,7 @@ export async function GET(request: Request) {
     .png()
     .toBuffer();
 
-  return new Response(image, {
+  return new Response(new Uint8Array(image), {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "no-store",
