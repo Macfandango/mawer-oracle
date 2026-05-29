@@ -4,54 +4,64 @@ import { useEffect, useState } from "react";
 
 export default function MindIntentionPage() {
   const [submitting, setSubmitting] = useState(false);
+
 const [requestId] = useState(
   () => Math.random().toString(36).slice(2) + Date.now()
 );
-const [anonymousId, setAnonymousId] = useState("");
-const [localDayKey, setLocalDayKey] = useState("");
-const [timezoneOffset, setTimezoneOffset] = useState("");
 
-  useEffect(() => {
-let storedAnonymousId = localStorage.getItem("mawer_anonymous_id");
+const [anonymousId] = useState(() => {
+  if (typeof window === "undefined") return "";
 
-if (!storedAnonymousId) {
-  storedAnonymousId = crypto.randomUUID();
-  localStorage.setItem("mawer_anonymous_id", storedAnonymousId);
-}
+  let id = localStorage.getItem("mawer_anonymous_id");
 
-const now = new Date();
-const dailyBoundary = new Date(now);
+  if (!id) {
+    id = Math.random().toString(36).slice(2) + Date.now();
+    localStorage.setItem("mawer_anonymous_id", id);
+  }
 
-dailyBoundary.setHours(6, 0, 0, 0);
+  return id;
+});
 
-if (now < dailyBoundary) {
-  dailyBoundary.setDate(dailyBoundary.getDate() - 1);
-}
+const [localDayKey] = useState(() => {
+  if (typeof window === "undefined") return "";
 
-const dayKey = dailyBoundary.toISOString().slice(0, 10);
+  const now = new Date();
+  const dailyBoundary = new Date(now);
 
-setAnonymousId(storedAnonymousId);
-setLocalDayKey(dayKey);
-setTimezoneOffset(String(now.getTimezoneOffset()));
-    const timer = setTimeout(() => {
-      const webApp = (window as any).Telegram?.WebApp;
-      const user = webApp?.initDataUnsafe?.user;
+  dailyBoundary.setHours(6, 0, 0, 0);
 
-      const setValue = (id: string, value: string) => {
-        const input = document.getElementById(id) as HTMLInputElement | null;
-        if (input) input.value = value || "";
-      };
+  if (now < dailyBoundary) {
+    dailyBoundary.setDate(dailyBoundary.getDate() - 1);
+  }
 
-      setValue("telegram_id", user?.id ? String(user.id) : "");
-      setValue("username", user?.username || "");
-      setValue("first_name", user?.first_name || "");
-      setValue("last_name", user?.last_name || "");
-      setValue("debug_tg_user", user ? JSON.stringify(user) : "");
-      setValue("debug_init_data", (webApp as any)?.initData || "");
-    }, 500);
+  return dailyBoundary.toISOString().slice(0, 10);
+});
 
-    return () => clearTimeout(timer);
-  }, []);
+const [timezoneOffset] = useState(() => {
+  if (typeof window === "undefined") return "";
+  return String(new Date().getTimezoneOffset());
+});
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    const webApp = (window as any).Telegram?.WebApp;
+    const user = webApp?.initDataUnsafe?.user;
+
+    const setValue = (id: string, value: string) => {
+      const input = document.getElementById(id) as HTMLInputElement | null;
+      if (input) input.value = value || "";
+    };
+
+    setValue("telegram_id", user?.id ? String(user.id) : "");
+    setValue("username", user?.username || "");
+    setValue("first_name", user?.first_name || "");
+    setValue("last_name", user?.last_name || "");
+    setValue("debug_tg_user", user ? JSON.stringify(user) : "");
+    setValue("debug_init_data", (webApp as any)?.initData || "");
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, []);
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
