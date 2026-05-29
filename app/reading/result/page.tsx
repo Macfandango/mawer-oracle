@@ -28,7 +28,7 @@ const cards: Card[] = [
     chance: "4%",
     weight: 5,
     meaning: "Новый путь, риск, свобода и шаг в неизвестность. Сегодня день, когда можно начать иначе.",
-    artwork: "/cards/fool.jpg",
+    artwork: "/cards/fool.png",
 tracks: ["Mystic Ambient"],
   },
   {
