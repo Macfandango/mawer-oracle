@@ -37,9 +37,22 @@ export async function GET(request: Request) {
           </div>
           <div style={{ fontSize: 44, lineHeight: 1.45 }}>{meaning}</div>
           <div style={{ borderTop: "1px solid #222", paddingTop: 28, display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ color: "#666", fontSize: 24 }}>ТРЕК ДНЯ</div>
-            <div style={{ fontSize: 30 }}>{track}</div>
-          </div>
+  <div style={{ color: "#666", fontSize: 24 }}>ТРЕК ДНЯ</div>
+  <div style={{ fontSize: 30 }}>{track}</div>
+</div>
+	
+<div style={{ borderTop: "1px solid #222", paddingTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>
+  <div style={{ color: "#d946ef", fontSize: 24, fontWeight: 700 }}>
+    ✨ Получено в MAWER ORACLE
+  </div>
+ <div style={{ color: "#777", fontSize: 20 }}>
+  mawer-oracle.vercel.app
+</div>
+
+<div style={{ color: "#999", fontSize: 20 }}>
+  @maweroracle_bot
+</div>
+</div>
         </div>
       </div>
     ),
