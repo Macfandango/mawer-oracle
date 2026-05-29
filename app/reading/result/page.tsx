@@ -909,22 +909,43 @@ export default async function Reading({
   const params = await searchParams;
   const readingId = params.readingId || "";
 
-  const selectedCard = drawOneCard();
-  const selectedTrack = pickRandomTrack(selectedCard.tracks);
+  let selectedCard: Card;
+let selectedTrack: string;
 
-  if (readingId) {
+if (readingId) {
+  const { data: existingReading } = await supabase
+    .from("intentions")
+    .select("*")
+    .eq("reading_id", readingId)
+    .maybeSingle();
+
+  if (existingReading?.card_name) {
+    selectedCard =
+      cards.find(
+        (card) => card.card === existingReading.card_name
+      ) || drawOneCard();
+
+    selectedTrack = existingReading.track_title || defaultTrack.title;
+  } else {
+    selectedCard = drawOneCard();
+    selectedTrack = pickRandomTrack(selectedCard.tracks);
+
     await supabase
       .from("intentions")
       .update({
-  card_name: selectedCard.card,
-  card_original: selectedCard.original,
-  card_meaning: selectedCard.meaning,
-  card_rarity: selectedCard.rarity,
-  card_artwork: selectedCard.artwork,
-  track_title: defaultTrack.title,
-})
+        card_name: selectedCard.card,
+        card_original: selectedCard.original,
+        card_meaning: selectedCard.meaning,
+        card_rarity: selectedCard.rarity,
+        card_artwork: selectedCard.artwork,
+        track_title: defaultTrack.title,
+      })
       .eq("reading_id", readingId);
   }
+} else {
+  selectedCard = drawOneCard();
+  selectedTrack = pickRandomTrack(selectedCard.tracks);
+}
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
@@ -969,7 +990,7 @@ export default async function Reading({
           <div className="bg-zinc-900 rounded-2xl p-4 space-y-3">
   <div>
     <p className="text-zinc-500 text-xs mb-1">ТРЕК ДНЯ</p>
-    <p className="text-lg">{defaultTrack.title}</p>
+    <p className="text-lg">{selectedTrack}</p>
   </div>
 
   <audio controls className="w-full">
