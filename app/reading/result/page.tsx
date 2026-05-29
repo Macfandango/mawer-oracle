@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import ShareCardButton from "./ShareCardButton";
 
 const defaultTrack = {
   title: "MAWER Oracle — Track of the Day",
@@ -976,13 +977,8 @@ export default async function Reading({
   </audio>
 </div>
 
-<a
-  href={`/api/share-card?readingId=${encodeURIComponent(readingId)}`}
-  target="_blank"
-  className="block w-full bg-fuchsia-500 text-white py-4 rounded-2xl font-bold text-center"
->
-  Сохранить свою карту
-</a>
+<ShareCardButton readingId={readingId} />
+
           <a
             href="/intention"
             className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
