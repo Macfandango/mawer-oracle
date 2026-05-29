@@ -44,11 +44,23 @@ export default function WriteIntentionPage() {
         </div>
 
         <form
-          action="/api/create-reading"
-          method="GET"
-          onSubmit={() => setSubmitting(true)}
-        >
-          <input type="hidden" name="method" value="write" />
+  action="/api/create-reading"
+  method="GET"
+ onSubmit={() => {
+setSubmitting(true);
+  const btn = document.getElementById(
+    "draw-card-btn-write"
+  ) as HTMLButtonElement;
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Открываю карту...";
+    btn.style.opacity = "0.5";
+  }
+}}
+>
+
+<input type="hidden" name="method" value="write" />
 
           <input id="telegram_id" type="hidden" name="telegram_id" />
           <input id="username" type="hidden" name="username" />
@@ -63,17 +75,13 @@ export default function WriteIntentionPage() {
             className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
           />
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className={`w-full py-5 rounded-3xl font-bold text-lg ${
-              submitting
-                ? "bg-zinc-500 text-zinc-300 pointer-events-none"
-                : "bg-white text-black"
-            }`}
-          >
-            {submitting ? "Открываю карту..." : "Получить карту"}
-          </button>
+<button
+  id="draw-card-btn-write"
+  type="submit"
+  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
+>
+  Получить карту
+</button>
         </form>
       </div>
     </main>
