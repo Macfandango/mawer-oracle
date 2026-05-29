@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function MindIntentionPage() {
   const [submitting, setSubmitting] = useState(false);
+const [requestId] = useState(() => crypto.randomUUID());
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,6 +62,7 @@ setSubmitting(true);
 >
 
 <input type="hidden" name="method" value="mind" />
+<input type="hidden" name="request_id" value={requestId} />
 
           <input id="telegram_id" type="hidden" name="telegram_id" />
           <input id="username" type="hidden" name="username" />

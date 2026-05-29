@@ -19,6 +19,22 @@ export async function GET(request: Request) {
   const username = searchParams.get("username");
   const first_name = searchParams.get("first_name");
   const last_name = searchParams.get("last_name");
+const request_id = searchParams.get("request_id");
+
+if (request_id) {
+  const { data: existingReading } = await supabase
+    .from("intentions")
+    .select("reading_id")
+    .eq("request_id", request_id)
+    .limit(1)
+    .maybeSingle();
+
+  if (existingReading?.reading_id) {
+    return NextResponse.redirect(
+      new URL(`/reading/loading?readingId=${existingReading.reading_id}`, request.url)
+    );
+  }
+}
 
   // защита от множественных кликов: если тот же Telegram user уже создал гадание
   // за последние 10 секунд — не создаём новую строку, а возвращаем его на существующее readingId
@@ -49,6 +65,7 @@ export async function GET(request: Request) {
 
   await supabase.from("intentions").insert([
     {
+request_id,
       debug_tg_user,
       debug_init_data,
       telegram_id,
