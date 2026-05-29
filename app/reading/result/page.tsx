@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import ShareCardButton from "./ShareCardButton";
+import NextCardTimer from "./NextCardTimer";
 
 const defaultTrack = {
   title: "MAWER Oracle — Track of the Day",
@@ -987,6 +988,8 @@ if (readingId) {
             </p>
           </div>
 
+<NextCardTimer />
+
           <div className="bg-zinc-900 rounded-2xl p-4 space-y-3">
   <div>
     <p className="text-zinc-500 text-xs mb-1">ТРЕК ДНЯ</p>
@@ -1004,7 +1007,7 @@ if (readingId) {
             href="/intention"
             className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
           >
-            Проверить ещё 1 намерение
+            Вернуться к своему намерению
           </a>
         </div>
       </div>
