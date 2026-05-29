@@ -100,6 +100,10 @@ onSubmit={(e) => {
 <input type="hidden" name="local_day_key" value={localDayKey} />
 <input type="hidden" name="timezone_offset" value={timezoneOffset} />
 
+<p className="text-red-500">
+  {anonymousId} | {localDayKey}
+</p>
+
 <button
   id="draw-card-btn-mind"
   type="submit"

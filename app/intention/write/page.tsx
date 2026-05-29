@@ -71,50 +71,53 @@ setTimezoneOffset(String(now.getTimezoneOffset()));
         <form
   action="/api/create-reading"
   method="GET"
-onSubmit={(e) => {
+  onSubmit={() => {
+    setSubmitting(true);
 
-  setSubmitting(true);
+    const btn = document.getElementById(
+      "draw-card-btn-write"
+    ) as HTMLButtonElement;
 
-  const btn = document.getElementById(
-    "draw-card-btn-write"
-  ) as HTMLButtonElement;
-
-  if (btn) {
-    btn.disabled = true;
-    btn.innerText = "Открываю карту...";
-    btn.style.opacity = "0.5";
-  }
-}}
+    if (btn) {
+      btn.disabled = true;
+      btn.innerText = "Открываю карту...";
+      btn.style.opacity = "0.5";
+    }
+  }}
 >
+  <input type="hidden" name="method" value="write" />
+  <input type="hidden" name="request_id" value={requestId} />
 
-<input type="hidden" name="method" value="write" />
-<input type="hidden" name="request_id" value={requestId} />
+  <input id="telegram_id" type="hidden" name="telegram_id" />
+  <input id="username" type="hidden" name="username" />
+  <input id="first_name" type="hidden" name="first_name" />
+  <input id="last_name" type="hidden" name="last_name" />
+  <input id="debug_tg_user" type="hidden" name="debug_tg_user" />
+  <input id="debug_init_data" type="hidden" name="debug_init_data" />
 
-          <input id="telegram_id" type="hidden" name="telegram_id" />
-          <input id="username" type="hidden" name="username" />
-          <input id="first_name" type="hidden" name="first_name" />
-          <input id="last_name" type="hidden" name="last_name" />
-          <input id="debug_tg_user" type="hidden" name="debug_tg_user" />
-          <input id="debug_init_data" type="hidden" name="debug_init_data" />
-<input type="hidden" name="anonymous_id" value={anonymousId} />
-<input type="hidden" name="local_day_key" value={localDayKey} />
-<input type="hidden" name="timezone_offset" value={timezoneOffset} />
+  <input type="hidden" name="anonymous_id" value={anonymousId} />
+  <input type="hidden" name="local_day_key" value={localDayKey} />
+  <input type="hidden" name="timezone_offset" value={timezoneOffset} />
 
-          <textarea
-            name="intention"
-            placeholder="Например: что мне важно понять прямо сейчас?"
-            className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
-          />
+  <p className="text-red-500">
+    {anonymousId} | {localDayKey}
+  </p>
 
-<button
-  id="draw-card-btn-write"
-  type="submit"
-  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
->
-  Получить карту
-</button>
-        </form>
-      </div>
-    </main>
-  );
-}
+  <textarea
+    name="intention"
+    placeholder="Например: что мне важно понять прямо сейчас?"
+    className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-3xl p-5 outline-none resize-none"
+  />
+
+<p className="text-red-500">
+  {anonymousId} | {localDayKey}
+</p>
+
+  <button
+    id="draw-card-btn-write"
+    type="submit"
+    className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
+  >
+    Получить карту
+  </button>
+</form>
