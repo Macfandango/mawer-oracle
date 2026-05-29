@@ -23,7 +23,15 @@ let artworkBase64 = "";
 if (artwork) {
   const imageRes = await fetch(artwork);
   const imageBuffer = await imageRes.arrayBuffer();
-  artworkBase64 = `data:image/jpeg;base64,${Buffer.from(imageBuffer).toString("base64")}`;
+
+  const bytes = new Uint8Array(imageBuffer);
+  let binary = "";
+
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  artworkBase64 = `data:image/jpeg;base64,${btoa(binary)}`;
 }
 
   return new ImageResponse(
@@ -86,16 +94,16 @@ if (artwork) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      flex: 1,
+      height: "860px",
     }}
   >
     <img
       src={artworkBase64}
-      width="520"
-      height="820"
+      width="500"
+      height="760"
       style={{
         objectFit: "contain",
-        borderRadius: 24,
+        display: "block",
       }}
     />
   </div>
