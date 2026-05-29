@@ -11,8 +11,9 @@ export async function GET(request: Request) {
   const rarity = searchParams.get("rarity") || "";
   const track = searchParams.get("track") || "";
 
-const origin = new URL(request.url).origin;
-const artwork = `${origin}/cards/fool.png`;
+const artworkData = await fetch(new URL("/cards/fool.png", request.url)).then(
+  (res) => res.arrayBuffer()
+);
 
   return new ImageResponse(
     (
@@ -68,26 +69,24 @@ const artwork = `${origin}/cards/fool.png`;
           </div>
         </div>
 
-{artwork && (
-  <div
+<div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "860px",
+  }}
+>
+  <img
+    src={artworkData as any}
+    width="500"
+    height="760"
     style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "860px",
+      objectFit: "contain",
+      display: "block",
     }}
-  >
-    <img
-      src={artwork}
-      width="500"
-      height="760"
-      style={{
-        objectFit: "contain",
-        display: "block",
-      }}
-    />
-  </div>
-)}
+  />
+</div>
 
         <div
           style={{
