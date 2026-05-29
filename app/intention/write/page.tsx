@@ -71,8 +71,14 @@ setTimezoneOffset(String(now.getTimezoneOffset()));
         <form
   action="/api/create-reading"
   method="GET"
- onSubmit={() => {
-setSubmitting(true);
+onSubmit={(e) => {
+  if (!anonymousId || !localDayKey) {
+    e.preventDefault();
+    return;
+  }
+
+  setSubmitting(true);
+
   const btn = document.getElementById(
     "draw-card-btn-write"
   ) as HTMLButtonElement;
@@ -107,7 +113,8 @@ setSubmitting(true);
 <button
   id="draw-card-btn-write"
   type="submit"
-  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
+  disabled={!anonymousId || !localDayKey}
+  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg disabled:opacity-50"
 >
   Получить карту
 </button>
