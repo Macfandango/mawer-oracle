@@ -8,25 +8,53 @@ const supabase = createClient(
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-const debug_tg_user = searchParams.get("debug_tg_user");
-const debug_init_data = searchParams.get("debug_init_data");
+
+  const debug_tg_user = searchParams.get("debug_tg_user");
+  const debug_init_data = searchParams.get("debug_init_data");
 
   const method = searchParams.get("method") || "unknown";
   const intention = searchParams.get("intention");
+
+  const telegram_id = searchParams.get("telegram_id");
+  const username = searchParams.get("username");
+  const first_name = searchParams.get("first_name");
+  const last_name = searchParams.get("last_name");
+
+  // защита от множественных кликов: если тот же Telegram user уже создал гадание
+  // за последние 10 секунд — не создаём новую строку, а возвращаем его на существующее readingId
+  if (telegram_id) {
+    const tenSecondsAgo = new Date(Date.now() - 10_000).toISOString();
+
+    const { data: recentReading } = await supabase
+      .from("intentions")
+      .select("reading_id")
+      .eq("telegram_id", telegram_id)
+      .eq("method", method)
+      .gte("created_at", tenSecondsAgo)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (recentReading?.reading_id) {
+      return NextResponse.redirect(
+        new URL(
+          `/reading/loading?readingId=${recentReading.reading_id}`,
+          request.url
+        )
+      );
+    }
+  }
+
   const readingId = crypto.randomUUID();
-const telegram_id = searchParams.get("telegram_id");
-const username = searchParams.get("username");
-const first_name = searchParams.get("first_name");
-const last_name = searchParams.get("last_name");
 
   await supabase.from("intentions").insert([
     {
-debug_tg_user,
-debug_init_data,
-telegram_id,
-username,
-first_name,
-last_name,
+      debug_tg_user,
+      debug_init_data,
+      telegram_id,
+      username,
+      first_name,
+      last_name,
       reading_id: readingId,
       method,
       intention_text: method === "write" ? intention : null,
