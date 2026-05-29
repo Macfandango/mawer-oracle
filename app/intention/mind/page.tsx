@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 
 export default function MindIntentionPage() {
   const [submitting, setSubmitting] = useState(false);
-const [requestId] = useState(() => crypto.randomUUID());
+const [requestId] = useState(
+  () => Math.random().toString(36).slice(2) + Date.now()
+);
 const [anonymousId, setAnonymousId] = useState("");
 const [localDayKey, setLocalDayKey] = useState("");
 const [timezoneOffset, setTimezoneOffset] = useState("");
