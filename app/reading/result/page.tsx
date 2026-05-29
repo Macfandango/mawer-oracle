@@ -915,8 +915,13 @@ export default async function Reading({
     await supabase
       .from("intentions")
       .update({
-        card_name: selectedCard.card,
-      })
+  card_name: selectedCard.card,
+  card_original: selectedCard.original,
+  card_meaning: selectedCard.meaning,
+  card_rarity: selectedCard.rarity,
+  card_artwork: selectedCard.artwork,
+  track_title: defaultTrack.title,
+})
       .eq("reading_id", readingId);
   }
 
@@ -972,23 +977,12 @@ export default async function Reading({
 </div>
 
 <a
-  href={`/api/share-card?card=${encodeURIComponent(
-    selectedCard.card
-  )}&original=${encodeURIComponent(
-    selectedCard.original
-  )}&meaning=${encodeURIComponent(
-    selectedCard.meaning
-  )}&rarity=${encodeURIComponent(
-    selectedCard.rarity
-  )}&track=${encodeURIComponent(
-    defaultTrack.title
-  )}&artwork=${encodeURIComponent(selectedCard.artwork)}`}
+  href={`/api/share-card?readingId=${encodeURIComponent(readingId)}`}
   target="_blank"
   className="block w-full bg-fuchsia-500 text-white py-4 rounded-2xl font-bold text-center"
 >
   Сохранить свою карту
 </a>
-
           <a
             href="/intention"
             className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
