@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   const track = searchParams.get("track") || "";
 
 const origin = new URL(request.url).origin;
-const artwork = `${origin}/cards/fool.jpg`;
+const artwork = `${origin}/cards/fool.png`;
 
   return new ImageResponse(
     (
