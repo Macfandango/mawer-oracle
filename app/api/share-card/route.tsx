@@ -1,33 +1,9 @@
+import { ImageResponse } from "@vercel/og";
 import sharp from "sharp";
 import path from "path";
 import { readFile } from "fs/promises";
 
 export const runtime = "nodejs";
-
-function esc(text: string) {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-async function textLayer(
-  text: string,
-  width: number,
-  height: number,
-  size: number,
-  color: string,
-  fontfile: string
-) {
-  return sharp({
-    text: {
-      text: `<span foreground="${color}" font_desc="Noto Sans ${size}">${esc(text)}</span>`,
-      width,
-      height,
-      rgba: true,
-      fontfile,
-    },
-  })
-    .png()
-    .toBuffer();
-}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -36,23 +12,137 @@ export async function GET(request: Request) {
   const original = searchParams.get("original") || "";
   const meaning = searchParams.get("meaning") || "";
   const rarity = searchParams.get("rarity") || "";
-const regularFontPath = path.join(
-  process.cwd(),
-  "public",
-  "fonts",
-  "NotoSans-Regular.ttf"
-);
-
-const boldFontPath = path.join(
-  process.cwd(),
-  "public",
-  "fonts",
-  "NotoSans-Bold.ttf"
-);
   const track = searchParams.get("track") || "";
 
-  const cardImagePath = path.join(process.cwd(), "public", "cards", "fool.png");
+  const ogResponse = new ImageResponse(
+    (
+      <div
+        style={{
+          width: "1080px",
+          height: "1920px",
+          background: "#000",
+          color: "#fff",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "80px",
+          fontFamily: "sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "#d946ef",
+              letterSpacing: "12px",
+              fontSize: 28,
+              fontWeight: 700,
+            }}
+          >
+            MAWER ORACLE
+          </div>
 
+          <div
+            style={{
+              fontSize: 82,
+              fontWeight: 700,
+              lineHeight: 1.1,
+            }}
+          >
+            {card}
+          </div>
+
+          <div
+            style={{
+              fontSize: 36,
+              color: "#888",
+            }}
+          >
+            {original}
+          </div>
+        </div>
+
+        <div
+          style={{
+            height: "860px",
+          }}
+        />
+
+        <div
+          style={{
+            border: "1px solid rgba(217,70,239,0.35)",
+            borderRadius: 48,
+            padding: 48,
+            display: "flex",
+            flexDirection: "column",
+            gap: 36,
+            background: "#111",
+          }}
+        >
+          <div
+            style={{
+              color: "#d946ef",
+              fontSize: 28,
+              letterSpacing: "8px",
+              fontWeight: 700,
+            }}
+          >
+            {rarity}
+          </div>
+
+          <div
+            style={{
+              fontSize: 44,
+              lineHeight: 1.45,
+            }}
+          >
+            {meaning}
+          </div>
+
+          <div
+            style={{
+              borderTop: "1px solid #222",
+              paddingTop: 28,
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+            }}
+          >
+            <div
+              style={{
+                color: "#666",
+                fontSize: 24,
+              }}
+            >
+              ТРЕК ДНЯ
+            </div>
+
+            <div
+              style={{
+                fontSize: 30,
+              }}
+            >
+              {track}
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+    {
+      width: 1080,
+      height: 1920,
+    }
+  );
+
+  const baseImage = Buffer.from(await ogResponse.arrayBuffer());
+
+  const cardImagePath = path.join(process.cwd(), "public", "cards", "fool.png");
   const cardImage = await readFile(cardImagePath);
 
   const resizedCard = await sharp(cardImage)
@@ -60,125 +150,12 @@ const boldFontPath = path.join(
     .png()
     .toBuffer();
 
-  const bg = await sharp({
-    create: {
-      width: 1080,
-      height: 1920,
-      channels: 4,
-      background: "#000000",
-    },
-  })
+  const finalImage = await sharp(baseImage)
+    .composite([{ input: resizedCard, top: 420, left: 290 }])
     .png()
     .toBuffer();
 
-  const infoBox = Buffer.from(`
-    <svg width="920" height="420" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="0" width="920" height="420" rx="48" fill="#111" stroke="#4a154f"/>
-      <line x1="50" y1="315" x2="870" y2="315" stroke="#222"/>
-    </svg>
-  `);
-
-  const image = await sharp(bg)
-    .composite([
-  {
-    input: await textLayer(
-      "MAWER ORACLE",
-      900,
-      80,
-      28,
-      "#d946ef",
-      boldFontPath
-    ),
-    top: 80,
-    left: 80,
-  },
-
-  {
-    input: await textLayer(
-      card,
-      900,
-      120,
-      76,
-      "#ffffff",
-      boldFontPath
-    ),
-    top: 150,
-    left: 80,
-  },
-
-  {
-    input: await textLayer(
-      original,
-      900,
-      60,
-      34,
-      "#888888",
-      regularFontPath
-    ),
-    top: 245,
-    left: 80,
-  },
-
-  { input: resizedCard, top: 420, left: 290 },
-
-  { input: infoBox, top: 1320, left: 80 },
-
-  {
-    input: await textLayer(
-      rarity,
-      820,
-      60,
-      28,
-      "#d946ef",
-      boldFontPath
-    ),
-    top: 1360,
-    left: 130,
-  },
-
-  {
-    input: await textLayer(
-      meaning,
-      820,
-      180,
-      38,
-      "#ffffff",
-      regularFontPath
-    ),
-    top: 1440,
-    left: 130,
-  },
-
-  {
-    input: await textLayer(
-      "ТРЕК ДНЯ",
-      300,
-      40,
-      24,
-      "#666666",
-      regularFontPath
-    ),
-    top: 1650,
-    left: 130,
-  },
-
-  {
-    input: await textLayer(
-      track,
-      820,
-      50,
-      28,
-      "#ffffff",
-      regularFontPath
-    ),
-    top: 1695,
-    left: 130,
-  },
-])
-    .png()
-    .toBuffer();
-
-  return new Response(new Uint8Array(image), {
+  return new Response(new Uint8Array(finalImage), {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "no-store",
