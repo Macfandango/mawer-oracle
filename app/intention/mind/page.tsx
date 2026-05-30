@@ -10,16 +10,22 @@ const [requestId] = useState(
 );
 
 const [anonymousId] = useState(() => {
-  if (typeof window === "undefined") return "";
+  try {
+    if (typeof window === "undefined") return "";
 
-  let id = localStorage.getItem("mawer_anonymous_id");
+    const storage = window.localStorage;
 
-  if (!id) {
-    id = Math.random().toString(36).slice(2) + Date.now();
-    localStorage.setItem("mawer_anonymous_id", id);
+    let id = storage.getItem("mawer_anonymous_id");
+
+    if (!id) {
+      id = Math.random().toString(36).slice(2) + Date.now();
+      storage.setItem("mawer_anonymous_id", id);
+    }
+
+    return id;
+  } catch (e) {
+    return "fallback-" + Math.random().toString(36).slice(2) + Date.now();
   }
-
-  return id;
 });
 
 const [localDayKey] = useState(() => {
@@ -112,8 +118,19 @@ onSubmit={(e) => {
 <input type="hidden" name="local_day_key" value={localDayKey} />
 <input type="hidden" name="timezone_offset" value={timezoneOffset} />
 
-<p className="text-red-500">
-  {anonymousId} | {localDayKey}
+<p className="text-red-500 break-all">
+  window:{typeof window}
+  <br />
+  ls:{
+    typeof window !== "undefined" &&
+    "localStorage" in window
+      ? "exists"
+      : "missing"
+  }
+  <br />
+  id:{anonymousId}
+  <br />
+  day:{localDayKey}
 </p>
 
 <button
