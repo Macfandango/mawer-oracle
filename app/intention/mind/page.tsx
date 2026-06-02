@@ -12,7 +12,10 @@ export default function MindIntentionPage() {
   const [timezoneOffset, setTimezoneOffset] = useState("");
 
   useEffect(() => {
+alert("STEP 1");
     const id = Math.random().toString(36).slice(2) + Date.now();
+
+alert("STEP 2");
 
     let storedAnonymousId = "";
 
@@ -25,6 +28,7 @@ export default function MindIntentionPage() {
 
         localStorage.setItem("mawer_anonymous_id", storedAnonymousId);
       }
+alert("STEP 3", storedAnonymousId);
     } catch {
       storedAnonymousId =
         "fallback-" + Math.random().toString(36).slice(2) + Date.now();
@@ -41,12 +45,18 @@ export default function MindIntentionPage() {
 
     const year = dailyBoundary.getFullYear();
     const month = String(dailyBoundary.getMonth() + 1).padStart(2, "0");
+
+alert("STEP 4", year, month, day);
+
     const day = String(dailyBoundary.getDate()).padStart(2, "0");
 
     setRequestId(id);
     setAnonymousId(storedAnonymousId);
     setLocalDayKey(`${year}-${month}-${day}`);
     setTimezoneOffset(String(now.getTimezoneOffset()));
+
+alert("STEP 5");
+
     setReady(true);
 
     const timer = setTimeout(() => {
