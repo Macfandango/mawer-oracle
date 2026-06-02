@@ -1,23 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function MindIntentionPage() {
+  const [tgUser, setTgUser] = useState<any>(null);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const webApp = (window as any).Telegram?.WebApp;
-      const user = webApp?.initDataUnsafe?.user;
-
-      const setValue = (id: string, value: string) => {
-        const input = document.getElementById(id) as HTMLInputElement | null;
-        if (input) input.value = value || "";
-      };
-
-      setValue("telegram_id", user?.id ? String(user.id) : "");
-      setValue("username", user?.username || "");
-      setValue("first_name", user?.first_name || "");
-      setValue("last_name", user?.last_name || "");
-    }, 500);
+      setTgUser(webApp?.initDataUnsafe?.user || null);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
@@ -40,10 +32,10 @@ export default function MindIntentionPage() {
 
         <form action="/api/create-reading" method="GET">
           <input type="hidden" name="method" value="mind" />
-<input id="telegram_id" type="hidden" name="telegram_id" />
-<input id="username" type="hidden" name="username" />
-<input id="first_name" type="hidden" name="first_name" />
-<input id="last_name" type="hidden" name="last_name" />
+<input type="hidden" name="telegram_id" value={tgUser?.id ? String(tgUser.id) : ""} />
+<input type="hidden" name="username" value={tgUser?.username || ""} />
+<input type="hidden" name="first_name" value={tgUser?.first_name || ""} />
+<input type="hidden" name="last_name" value={tgUser?.last_name || ""} />
 
           <button
             type="submit"
