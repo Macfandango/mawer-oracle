@@ -52,7 +52,7 @@ export async function GET(request: Request) {
     response.cookies.set("mawer_device_id", device_id, {
       maxAge: 60 * 60 * 24 * 365,
       path: "/",
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
       httpOnly: true,
     });
