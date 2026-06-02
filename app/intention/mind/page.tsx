@@ -4,70 +4,70 @@ import { useEffect, useState } from "react";
 
 export default function MindIntentionPage() {
   const [submitting, setSubmitting] = useState(false);
+  const [ready, setReady] = useState(false);
 
-const [requestId] = useState(
-  () => Math.random().toString(36).slice(2) + Date.now()
-);
+  const [requestId, setRequestId] = useState("");
+  const [anonymousId, setAnonymousId] = useState("");
+  const [localDayKey, setLocalDayKey] = useState("");
+  const [timezoneOffset, setTimezoneOffset] = useState("");
 
-const [anonymousId] = useState(() => {
-  try {
-    if (typeof window === "undefined") return "";
+  useEffect(() => {
+    const id = Math.random().toString(36).slice(2) + Date.now();
 
-    const storage = window.localStorage;
+    let storedAnonymousId = "";
 
-    let id = storage.getItem("mawer_anonymous_id");
+    try {
+      storedAnonymousId = localStorage.getItem("mawer_anonymous_id") || "";
 
-    if (!id) {
-      id = Math.random().toString(36).slice(2) + Date.now();
-      storage.setItem("mawer_anonymous_id", id);
+      if (!storedAnonymousId) {
+        storedAnonymousId =
+          "fallback-" + Math.random().toString(36).slice(2) + Date.now();
+
+        localStorage.setItem("mawer_anonymous_id", storedAnonymousId);
+      }
+    } catch {
+      storedAnonymousId =
+        "fallback-" + Math.random().toString(36).slice(2) + Date.now();
     }
 
-    return id;
-  } catch (e) {
-    return "fallback-" + Math.random().toString(36).slice(2) + Date.now();
-  }
-});
+    const now = new Date();
+    const dailyBoundary = new Date(now);
 
-const [localDayKey] = useState(() => {
-  if (typeof window === "undefined") return "";
+    dailyBoundary.setHours(6, 0, 0, 0);
 
-  const now = new Date();
-  const dailyBoundary = new Date(now);
+    if (now < dailyBoundary) {
+      dailyBoundary.setDate(dailyBoundary.getDate() - 1);
+    }
 
-  dailyBoundary.setHours(6, 0, 0, 0);
+    const year = dailyBoundary.getFullYear();
+    const month = String(dailyBoundary.getMonth() + 1).padStart(2, "0");
+    const day = String(dailyBoundary.getDate()).padStart(2, "0");
 
-  if (now < dailyBoundary) {
-    dailyBoundary.setDate(dailyBoundary.getDate() - 1);
-  }
+    setRequestId(id);
+    setAnonymousId(storedAnonymousId);
+    setLocalDayKey(`${year}-${month}-${day}`);
+    setTimezoneOffset(String(now.getTimezoneOffset()));
+    setReady(true);
 
-  return dailyBoundary.toISOString().slice(0, 10);
-});
+    const timer = setTimeout(() => {
+      const webApp = (window as any).Telegram?.WebApp;
+      const user = webApp?.initDataUnsafe?.user;
 
-const [timezoneOffset] = useState(() => {
-  if (typeof window === "undefined") return "";
-  return String(new Date().getTimezoneOffset());
-});
+      const setValue = (id: string, value: string) => {
+        const input = document.getElementById(id) as HTMLInputElement | null;
+        if (input) input.value = value || "";
+      };
 
-useEffect(() => {
-  const timer = setTimeout(() => {
-    const webApp = (window as any).Telegram?.WebApp;
-    const user = webApp?.initDataUnsafe?.user;
+      setValue("telegram_id", user?.id ? String(user.id) : "");
+      setValue("username", user?.username || "");
+      setValue("first_name", user?.first_name || "");
+      setValue("last_name", user?.last_name || "");
+      setValue("debug_tg_user", user ? JSON.stringify(user) : "");
+      setValue("debug_init_data", webApp?.initData || "");
+    }, 500);
 
-    const setValue = (id: string, value: string) => {
-      const input = document.getElementById(id) as HTMLInputElement | null;
-      if (input) input.value = value || "";
-    };
-
-    setValue("telegram_id", user?.id ? String(user.id) : "");
-    setValue("username", user?.username || "");
-    setValue("first_name", user?.first_name || "");
-    setValue("last_name", user?.last_name || "");
-    setValue("debug_tg_user", user ? JSON.stringify(user) : "");
-    setValue("debug_init_data", (webApp as any)?.initData || "");
-  }, 500);
-
-  return () => clearTimeout(timer);
-}, []);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
@@ -86,27 +86,25 @@ useEffect(() => {
           </p>
         </div>
 
-<form
-  action="/api/create-reading"
-  method="GET"
-onSubmit={(e) => {
+        <form
+          action="/api/create-reading"
+          method="GET"
+          onSubmit={() => {
+            setSubmitting(true);
 
-  setSubmitting(true);
+            const btn = document.getElementById(
+              "draw-card-btn-mind"
+            ) as HTMLButtonElement;
 
-  const btn = document.getElementById(
-    "draw-card-btn-mind"
-  ) as HTMLButtonElement;
-
-  if (btn) {
-    btn.disabled = true;
-    btn.innerText = "Открываю карту...";
-    btn.style.opacity = "0.5";
-  }
-}}
->
-
-<input type="hidden" name="method" value="mind" />
-<input type="hidden" name="request_id" value={requestId} />
+            if (btn) {
+              btn.disabled = true;
+              btn.innerText = "Открываю карту...";
+              btn.style.opacity = "0.5";
+            }
+          }}
+        >
+          <input type="hidden" name="method" value="mind" />
+          <input type="hidden" name="request_id" value={requestId} />
 
           <input id="telegram_id" type="hidden" name="telegram_id" />
           <input id="username" type="hidden" name="username" />
@@ -114,32 +112,29 @@ onSubmit={(e) => {
           <input id="last_name" type="hidden" name="last_name" />
           <input id="debug_tg_user" type="hidden" name="debug_tg_user" />
           <input id="debug_init_data" type="hidden" name="debug_init_data" />
-<input type="hidden" name="anonymous_id" value={anonymousId} />
-<input type="hidden" name="local_day_key" value={localDayKey} />
-<input type="hidden" name="timezone_offset" value={timezoneOffset} />
 
-<p className="text-red-500 break-all">
-  window:{typeof window}
-  <br />
-  ls:{
-    typeof window !== "undefined" &&
-    "localStorage" in window
-      ? "exists"
-      : "missing"
-  }
-  <br />
-  id:{anonymousId}
-  <br />
-  day:{localDayKey}
-</p>
+          <input type="hidden" name="anonymous_id" value={anonymousId} />
+          <input type="hidden" name="local_day_key" value={localDayKey} />
+          <input type="hidden" name="timezone_offset" value={timezoneOffset} />
 
-<button
-  id="draw-card-btn-mind"
-  type="submit"
-  className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
->
-  Получить карту
-</button>
+          <p className="text-red-500 break-all text-xs">
+            id:{anonymousId}
+            <br />
+            day:{localDayKey}
+          </p>
+
+          <button
+            id="draw-card-btn-mind"
+            type="submit"
+            disabled={!ready || submitting}
+            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg disabled:opacity-50"
+          >
+            {submitting
+              ? "Открываю карту..."
+              : ready
+              ? "Получить карту"
+              : "Готовлю карту..."}
+          </button>
         </form>
       </div>
     </main>
