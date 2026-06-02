@@ -894,8 +894,18 @@ function shuffleDeck(deck: Card[]) {
 }
 
 function drawOneCard() {
-  const shuffledDeck = shuffleDeck(cards);
-  return shuffledDeck[0];
+  const totalWeight = cards.reduce((sum, card) => sum + card.weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const card of cards) {
+    random -= card.weight;
+
+    if (random <= 0) {
+      return card;
+    }
+  }
+
+  return cards[cards.length - 1];
 }
 
 function pickRandomTrack(tracks: string[]) {

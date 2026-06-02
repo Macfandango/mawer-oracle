@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function WriteIntentionPage() {
+  const [submitting, setSubmitting] = useState(false);
   const [tgUser, setTgUser] = useState<any>(null);
 
   useEffect(() => {
@@ -13,29 +14,27 @@ export default function WriteIntentionPage() {
 
     return () => clearTimeout(timer);
   }, []);
+
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
       <div className="max-w-md w-full space-y-6">
         <div className="text-center space-y-4">
-          <p className="text-fuchsia-400 tracking-[0.4em] text-sm">
-            MAWER ORACLE
-          </p>
-
-          <h1 className="text-4xl font-bold leading-tight">
-            Запиши намерение
-          </h1>
-
-          <p className="text-zinc-400">
-            Что тебя сейчас волнует?
-          </p>
+          <p className="text-fuchsia-400 tracking-[0.4em] text-sm">MAWER ORACLE</p>
+          <h1 className="text-4xl font-bold leading-tight">Запиши намерение</h1>
+          <p className="text-zinc-400">Что тебя сейчас волнует?</p>
         </div>
 
-        <form action="/api/create-reading" method="GET" className="space-y-4">
+        <form
+          action="/api/create-reading"
+          method="GET"
+          className="space-y-4"
+          onSubmit={() => setSubmitting(true)}
+        >
           <input type="hidden" name="method" value="write" />
-<input type="hidden" name="telegram_id" value={tgUser?.id ? String(tgUser.id) : ""} />
-<input type="hidden" name="username" value={tgUser?.username || ""} />
-<input type="hidden" name="first_name" value={tgUser?.first_name || ""} />
-<input type="hidden" name="last_name" value={tgUser?.last_name || ""} />
+          <input type="hidden" name="telegram_id" value={tgUser?.id ? String(tgUser.id) : ""} />
+          <input type="hidden" name="username" value={tgUser?.username || ""} />
+          <input type="hidden" name="first_name" value={tgUser?.first_name || ""} />
+          <input type="hidden" name="last_name" value={tgUser?.last_name || ""} />
 
           <textarea
             name="intention"
@@ -45,9 +44,10 @@ export default function WriteIntentionPage() {
 
           <button
             type="submit"
-            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg"
+            disabled={submitting}
+            className="w-full bg-white text-black py-5 rounded-3xl font-bold text-lg disabled:opacity-50"
           >
-            Получить карту
+            {submitting ? "Открываю карту..." : "Получить карту"}
           </button>
         </form>
       </div>
