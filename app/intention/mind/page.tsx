@@ -28,7 +28,7 @@ alert("STEP 2");
 
         localStorage.setItem("mawer_anonymous_id", storedAnonymousId);
       }
-alert("STEP 3", storedAnonymousId);
+alert("STEP 3" + storedAnonymousId);
     } catch {
       storedAnonymousId =
         "fallback-" + Math.random().toString(36).slice(2) + Date.now();
@@ -45,10 +45,9 @@ alert("STEP 3", storedAnonymousId);
 
     const year = dailyBoundary.getFullYear();
     const month = String(dailyBoundary.getMonth() + 1).padStart(2, "0");
+const day = String(dailyBoundary.getDate()).padStart(2, "0");
 
-alert("STEP 4", year, month, day);
-
-    const day = String(dailyBoundary.getDate()).padStart(2, "0");
+alert("STEP 4 " + year + "-" + month + "-" + day);
 
     setRequestId(id);
     setAnonymousId(storedAnonymousId);
