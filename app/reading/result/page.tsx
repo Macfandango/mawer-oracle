@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase";
 import ShareCardButton from "./ShareCardButton";
-import NextCardTimer from "./NextCardTimer";
 
 const defaultTrack = {
   title: "MAWER Oracle — Track of the Day",
@@ -975,7 +974,7 @@ if (readingId) {
               {selectedCard.rarity}
             </p>
 
-            <p className="text-zinc-500 text-xs">КАРТА ДНЯ</p>
+            <p className="text-zinc-500 text-xs">КАРТА НАМЕРЕНИЯ</p>
           </div>
 
           <h2 className="text-4xl font-bold">{selectedCard.card}</h2>
@@ -998,26 +997,13 @@ if (readingId) {
             </p>
           </div>
 
-<NextCardTimer />
-
-          <div className="bg-zinc-900 rounded-2xl p-4 space-y-3">
-  <div>
-    <p className="text-zinc-500 text-xs mb-1">ТРЕК ДНЯ</p>
-    <p className="text-lg">{selectedTrack}</p>
-  </div>
-
-  <audio controls className="w-full">
-    <source src={defaultTrack.audioUrl} type="audio/mpeg" />
-  </audio>
-</div>
-
 <ShareCardButton readingId={readingId} />
 
           <a
             href="/intention"
             className="block w-full bg-white text-black py-4 rounded-2xl font-bold text-center"
           >
-            Вернуться к своему намерению
+            Задать еще 1 намерение
           </a>
         </div>
       </div>
