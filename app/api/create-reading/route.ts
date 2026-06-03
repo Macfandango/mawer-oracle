@@ -60,53 +60,6 @@ export async function GET(request: Request) {
     return response;
   };
 
-  let todayReading: { reading_id: string } | null = null;
-
-  if (telegram_id) {
-    const { data } = await supabase
-      .from("intentions")
-      .select("reading_id")
-      .eq("telegram_id", telegram_id)
-      .eq("local_day_key", local_day_key)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    todayReading = data;
-  }
-
-  if (!todayReading && anonymous_id) {
-    const { data } = await supabase
-      .from("intentions")
-      .select("reading_id")
-      .eq("anonymous_id", anonymous_id)
-      .eq("local_day_key", local_day_key)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    todayReading = data;
-  }
-
-  if (!todayReading) {
-    const { data } = await supabase
-      .from("intentions")
-      .select("reading_id")
-      .eq("device_id", device_id)
-      .eq("local_day_key", local_day_key)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    todayReading = data;
-  }
-
-  if (todayReading?.reading_id) {
-    return redirectWithCookie(
-      new URL(`/reading/result?readingId=${todayReading.reading_id}&locked=1`, request.url)
-    );
-  }
-
   const readingId = crypto.randomUUID();
 
   await supabase.from("intentions").insert([
