@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import ShareCardButton from "./ShareCardButton";
+import { bodyPractices, mindPractices, soulPractices } from "@/lib/practices";
 
 const defaultTrack = {
   title: "MAWER Oracle — Track of the Day",
@@ -911,6 +912,10 @@ function pickRandomTrack(tracks: string[]) {
   return tracks[Math.floor(Math.random() * tracks.length)];
 }
 
+function pickPractice(practices: typeof bodyPractices) {
+  return practices[Math.floor(Math.random() * practices.length)];
+}
+
 export default async function Reading({
   searchParams,
 }: {
@@ -939,7 +944,7 @@ if (readingId) {
   } else {
     selectedCard = drawOneCard();
     selectedTrack = pickRandomTrack(selectedCard.tracks);
-
+    
     await supabase
       .from("intentions")
       .update({
@@ -952,10 +957,20 @@ if (readingId) {
       })
       .eq("reading_id", readingId);
   }
+  
 } else {
   selectedCard = drawOneCard();
   selectedTrack = pickRandomTrack(selectedCard.tracks);
 }
+
+    const bodyPractice =
+    bodyPractices[Math.floor(Math.random() * bodyPractices.length)];
+
+    const mindPractice =
+    mindPractices[Math.floor(Math.random() * mindPractices.length)];
+
+    const soulPractice =
+    soulPractices[Math.floor(Math.random() * soulPractices.length)];
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
@@ -996,6 +1011,47 @@ if (readingId) {
               Только {selectedCard.chance} пользователей получили эту карту сегодня.
             </p>
           </div>
+
+<div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800 space-y-4">
+  <div>
+    <p className="text-xs text-zinc-500 mb-1">ПРАКТИКА ДНЯ</p>
+    <p className="text-lg font-bold text-white">
+      Тело · Разум · Душа
+    </p>
+  </div>
+
+  <div className="space-y-3">
+    <div className="border border-zinc-800 rounded-2xl p-4">
+      <p className="text-xs text-fuchsia-400 font-bold mb-1">
+        ДЛЯ ТЕЛА · {bodyPractice.duration} МИН
+      </p>
+      <p className="font-bold mb-2">{bodyPractice.title}</p>
+      <p className="text-zinc-400 text-sm leading-relaxed">
+        {bodyPractice.text}
+      </p>
+    </div>
+
+    <div className="border border-zinc-800 rounded-2xl p-4">
+      <p className="text-xs text-cyan-400 font-bold mb-1">
+        ДЛЯ РАЗУМА · {mindPractice.duration} МИН
+      </p>
+      <p className="font-bold mb-2">{mindPractice.title}</p>
+      <p className="text-zinc-400 text-sm leading-relaxed">
+        {mindPractice.text}
+      </p>
+    </div>
+
+    <div className="border border-zinc-800 rounded-2xl p-4">
+      <p className="text-xs text-pink-400 font-bold mb-1">
+        ДЛЯ ДУШИ · {soulPractice.duration} МИН
+      </p>
+      <p className="font-bold mb-2">{soulPractice.title}</p>
+      <p className="text-zinc-400 text-sm leading-relaxed">
+        {soulPractice.text}
+      </p>
+    </div>
+  </div>
+</div>
 
 <ShareCardButton readingId={readingId} />
 
