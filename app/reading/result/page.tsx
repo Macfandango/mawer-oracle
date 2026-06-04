@@ -962,15 +962,35 @@ if (readingId) {
   selectedCard = drawOneCard();
   selectedTrack = pickRandomTrack(selectedCard.tracks);
 }
+    const matchingBodyPractice = bodyPractices.filter(
+      practice =>
+        practice.relatedCards.includes(selectedCard.card)
+);
 
     const bodyPractice =
-    bodyPractices[Math.floor(Math.random() * bodyPractices.length)];
+    matchingBodyPractice.length > 0
+    ? pickPractice(matchingBodyPractice)
+    : pickPractice(bodyPractices);
+
+    const matchingMindPractice = mindPractices.filter(
+      practice =>
+        practice.relatedCards.includes(selectedCard.card)
+);
 
     const mindPractice =
-    mindPractices[Math.floor(Math.random() * mindPractices.length)];
+    matchingMindPractice.length > 0
+    ? pickPractice(matchingMindPractice)
+    : pickPractice(mindPractices);
+
+    const matchingSoulPractice = soulPractices.filter(
+      practice =>
+        practice.relatedCards.includes(selectedCard.card)
+);
 
     const soulPractice =
-    soulPractices[Math.floor(Math.random() * soulPractices.length)];
+  matchingSoulPractice.length > 0
+    ? pickPractice(matchingSoulPractice)
+    : pickPractice(soulPractices);
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center p-5">
