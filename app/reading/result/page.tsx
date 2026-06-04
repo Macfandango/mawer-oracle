@@ -944,7 +944,7 @@ if (readingId) {
   } else {
     selectedCard = drawOneCard();
     selectedTrack = pickRandomTrack(selectedCard.tracks);
-    
+
     await supabase
       .from("intentions")
       .update({
@@ -1051,6 +1051,16 @@ if (readingId) {
       </p>
     </div>
   </div>
+</div>
+
+<div className="bg-zinc-900 rounded-2xl p-4">
+  <p className="text-xs text-zinc-500 mb-2">ТРЕК ДНЯ</p>
+
+  <p className="text-lg mb-3">{selectedTrack}</p>
+
+  <audio controls className="w-full">
+    <source src={defaultTrack.url} type="audio/mpeg" />
+  </audio>
 </div>
 
 <ShareCardButton readingId={readingId} />
