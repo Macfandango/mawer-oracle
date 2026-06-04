@@ -1059,7 +1059,7 @@ if (readingId) {
   <p className="text-lg mb-3">{selectedTrack}</p>
 
   <audio controls className="w-full">
-    <source src={defaultTrack.url} type="audio/mpeg" />
+    <source src={defaultTrack.audioUrl} type="audio/mpeg" />
   </audio>
 </div>
 
